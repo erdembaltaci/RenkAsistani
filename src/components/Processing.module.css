@@ -1,0 +1,57 @@
+.processing {
+  display: grid;
+  gap: 16px;
+  animation: rise 0.4s var(--ease) both;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--fill) 25%, #f8f8fa 50%, var(--fill) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+.photo {
+  height: 34svh;
+  border-radius: var(--radius-xl);
+}
+
+.card {
+  display: grid;
+  gap: 14px;
+  padding: 10px 10px 22px;
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+.block {
+  height: 150px;
+  border-radius: var(--radius-lg);
+}
+
+.line,
+.pill {
+  margin: 0 14px;
+  border-radius: 999px;
+}
+
+.title {
+  height: 36px;
+  width: 70%;
+}
+
+.sub {
+  height: 18px;
+  width: 42%;
+}
+
+.pill {
+  height: 56px;
+  border-radius: var(--radius-md);
+}
+
+.label {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}

@@ -10,7 +10,8 @@ Backend, veritabanı ve yapay zekâ API'si yoktur; her şey tarayıcıda (Canvas
 - Otomatik renk tespiti ve fotoğrafa dokunarak nokta seçme
 - Çoklu fotoğraf: LAB uzayında medyan ile birleştirme, ışık farkı kaynaklı sapmayı işaretleme
 - 430'dan fazla Türkçe renk adı, CIEDE2000 ile eşleştirme, en yakın ikinci ad ve belirsizlik notu
-- Rengi notla birlikte kaydetme (yalnızca cihazın tarayıcısında saklanır)
+- Rengi notla birlikte kaydetme, notlarda arama (yalnızca cihazın tarayıcısında saklanır)
+- Rengi renk kartı görseli olarak paylaşma (telefonun paylaşım penceresi, yoksa WhatsApp bağlantısı)
 
 ## Çalıştırma
 

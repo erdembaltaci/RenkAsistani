@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAX_NOTE_LENGTH, filterSavedColors, formatSavedColorsAsText, isSavedColor, normalizeNote, type SavedColor } from './savedColor';
+import { MAX_NOTE_LENGTH, filterSavedColors, formatColorText, formatSavedColorsAsText, isSavedColor, normalizeNote, type SavedColor } from './savedColor';
 
 const sample: SavedColor = {
   id: 'a1',
@@ -72,5 +72,15 @@ describe('filterSavedColors', () => {
   it('eşleşme yoksa boş liste verir ve girdiyi değiştirmez', () => {
     expect(filterSavedColors(list, 'yok böyle bir şey')).toEqual([]);
     expect(list).toHaveLength(3);
+  });
+});
+
+describe('formatColorText', () => {
+  it('notsuz rengi tek satırda yazar', () => {
+    expect(formatColorText({ ...sample, note: '' })).toBe('Gümüş gri · #CFCFD1 · Açık gri');
+  });
+
+  it('notu ikinci satıra ekler', () => {
+    expect(formatColorText(sample)).toBe('Gümüş gri · #CFCFD1 · Açık gri\nNot: mavi tişört');
   });
 });

@@ -5,15 +5,16 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 54px;
+  min-height: 56px;
   padding: 0 20px;
   border: 0;
   border-radius: 999px;
   font-weight: 650;
+  letter-spacing: -0.005em;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  transition: transform 0.12s ease;
+  transition: transform 0.2s var(--ease);
 }
 
 .trigger:active,
@@ -24,23 +25,25 @@
 
 .trigger,
 .primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, #26262b, #0f0f11);
   color: var(--on-accent);
+  box-shadow: var(--shadow-cta);
 }
 
 .trigger {
   width: 100%;
+  animation: rise 0.6s var(--ease) 0.24s both;
 }
 
 .secondary {
-  background: var(--surface);
+  background: var(--fill);
   color: var(--ink);
 }
 
 .form {
   display: grid;
   gap: 8px;
-  animation: rise 0.3s ease both;
+  animation: rise 0.35s var(--ease) both;
 }
 
 .label {
@@ -55,7 +58,7 @@
   padding: 12px 14px;
   border: 1.5px solid var(--line-strong);
   border-radius: var(--radius-md);
-  background: var(--bg);
+  background: var(--card);
   color: var(--ink);
   font: inherit;
   font-size: 16px;
@@ -71,7 +74,7 @@
 }
 
 .input::placeholder {
-  color: #85858b;
+  color: #85858d;
 }
 
 .counter {
@@ -92,9 +95,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 54px;
+  min-height: 56px;
   padding: 0 6px;
-  animation: rise 0.3s ease both;
+  animation: rise 0.35s var(--ease) both;
 }
 
 .savedText {

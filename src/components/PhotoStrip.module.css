@@ -24,10 +24,16 @@
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--surface);
+  background: var(--fill);
+  box-shadow: var(--shadow-pill);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.thumb:active {
+  transform: scale(0.95);
 }
 
 .thumb img {

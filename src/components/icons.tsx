@@ -99,3 +99,10 @@ export const PencilIcon = (props: IconProps) => (
     <path d="M14.5 6.3l3.2 3.2" />
   </svg>
 );
+
+export const ShareIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M12 15V4M8 7.5 12 3.5l4 4" />
+    <path d="M6 11.5H5.5A1.5 1.5 0 0 0 4 13v5.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V13a1.5 1.5 0 0 0-1.5-1.5H18" />
+  </svg>
+);

@@ -1,5 +1,24 @@
 .bar {
-  padding: 8px 0 4px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  isolation: isolate;
+  margin: 0 -18px;
+  padding: 8px 18px 6px;
+}
+
+/* Arka plan, altına doğru eriyerek kaybolur: kaydırınca içerik altından geçer ama sert bir şerit oluşmaz. */
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -18px;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(243, 243, 245, 0.88) 55%, rgba(243, 243, 245, 0));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  pointer-events: none;
 }
 
 .row {
@@ -15,17 +34,16 @@
 }
 
 .greeting {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1.35rem;
-  font-weight: 650;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
 }
 
 .heart {
-  flex: none;
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -2px;
   color: #e58aa3;
 }
 
@@ -37,6 +55,7 @@
 
 .back,
 .notes {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -44,24 +63,25 @@
   padding: 0 14px;
   border: 0;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--card);
   color: var(--ink);
+  box-shadow: var(--shadow-pill);
   font-size: 0.92rem;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  transition: background-color 0.15s ease;
+  transition: transform 0.2s var(--ease);
 }
 
 .back {
-  padding-left: 10px;
+  padding-left: 12px;
 }
 
 .back:active,
 .notes:active {
-  background: var(--surface-strong);
+  transform: scale(0.96);
 }
 
 .count {

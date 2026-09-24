@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { MAX_NOTE_LENGTH, type SavedColor } from '../domain/savedColor';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
-import { CheckIcon, CopyIcon, PencilIcon, TrashIcon } from './icons';
+import { useShareColor } from '../hooks/useShareColor';
+import { CheckIcon, CopyIcon, PencilIcon, ShareIcon, TrashIcon } from './icons';
 import styles from './SavedColorCard.module.css';
 
 interface SavedColorCardProps {
@@ -20,6 +21,7 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
   const [mode, setMode] = useState<CardMode>('view');
   const [draft, setDraft] = useState(color.note);
   const { status, copy } = useCopyToClipboard();
+  const { share, message } = useShareColor();
 
   const startEditing = () => {
     setDraft(color.note);
@@ -74,6 +76,12 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
         <p className={color.note ? styles.note : styles.noNote}>{color.note || 'Not eklenmemiş'}</p>
       )}
 
+      {message && (
+        <p className={styles.message} role="status">
+          {message}
+        </p>
+      )}
+
       <div className={styles.footer}>
         <span className={styles.date}>{formatDate(color.savedAt)}</span>
         {mode === 'confirmDelete' ? (
@@ -89,6 +97,9 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
         ) : (
           mode === 'view' && (
             <span className={styles.tools}>
+              <button type="button" className={styles.iconButton} onClick={() => share(color)} aria-label={`${color.name} notunu paylaş`}>
+                <ShareIcon width={20} height={20} />
+              </button>
               <button type="button" className={styles.iconButton} onClick={startEditing} aria-label={`${color.name} notunu düzenle`}>
                 <PencilIcon width={20} height={20} />
               </button>

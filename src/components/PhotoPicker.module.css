@@ -2,50 +2,81 @@
 .hero {
   display: grid;
   justify-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .capture {
   display: grid;
   justify-items: center;
-  gap: 14px;
+  gap: 16px;
   cursor: pointer;
   user-select: none;
 }
 
 .captureButton {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 112px;
-  height: 112px;
+  width: 116px;
+  height: 116px;
   border-radius: 50%;
-  background: var(--accent);
+  background: linear-gradient(160deg, #26262b, #0d0d0f);
   color: var(--on-accent);
-  box-shadow: 0 0 0 10px rgba(17, 17, 19, 0.06);
-  transition: transform 0.15s ease;
+  box-shadow:
+    0 0 0 9px rgba(17, 17, 19, 0.05),
+    0 22px 34px -14px rgba(17, 17, 19, 0.6);
+  transition: transform 0.25s var(--ease);
+}
+
+.captureButton::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(17, 17, 19, 0.14);
+  animation: breathe 3.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0;
+  }
 }
 
 .capture:active .captureButton {
-  transform: scale(0.95);
+  transform: scale(0.94);
 }
 
 .captureLabel {
   font-size: 1.05rem;
   font-weight: 650;
+  letter-spacing: -0.01em;
 }
 
 .galleryLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 48px;
-  padding: 0 18px;
+  min-height: 50px;
+  padding: 0 20px;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--card);
+  box-shadow: var(--shadow-pill);
   color: var(--ink);
   font-weight: 600;
   cursor: pointer;
   user-select: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.galleryLink:active {
+  transform: scale(0.96);
 }
 
 .capture:has(input:focus-visible) .captureButton,
@@ -62,16 +93,13 @@
   pointer-events: none;
 }
 
-/* ---- Sonuç ekranı: alta sabit çubuk ---- */
+/* ---- Sonuç ekranı: alta yüzen çubuk ---- */
 .bar {
   position: fixed;
   inset: auto 0 0 0;
   z-index: 10;
-  padding: 10px 16px calc(10px + var(--safe-bottom));
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--line);
+  padding: 0 14px calc(12px + var(--safe-bottom));
+  pointer-events: none;
 }
 
 .barInner {
@@ -79,6 +107,15 @@
   margin: 0 auto;
   display: grid;
   gap: 8px;
+  padding: 8px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow:
+    0 0 0 1px rgba(16, 16, 22, 0.06),
+    0 18px 40px -16px rgba(16, 16, 22, 0.3);
+  pointer-events: auto;
 }
 
 .buttons {
@@ -95,18 +132,18 @@
   min-height: 52px;
   padding: 0 10px;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--fill);
   color: var(--ink);
   font-size: 0.95rem;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: transform 0.12s ease;
+  transition: transform 0.2s var(--ease);
 }
 
 .button:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 @media (max-width: 370px) {

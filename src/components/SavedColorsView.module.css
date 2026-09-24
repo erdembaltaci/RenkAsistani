@@ -1,7 +1,7 @@
 .view {
   display: grid;
   gap: 14px;
-  animation: rise 0.35s ease both;
+  animation: rise 0.45s var(--ease) both;
 }
 
 .head {
@@ -13,9 +13,9 @@
 }
 
 .title {
-  font-size: 1.9rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 2rem;
+  font-weight: 750;
+  letter-spacing: -0.045em;
 }
 
 .copyAll {
@@ -26,7 +26,8 @@
   padding: 0 14px;
   border: 0;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--card);
+  box-shadow: var(--shadow-pill);
   color: var(--ink);
   font-weight: 600;
   font-size: 0.9rem;
@@ -43,11 +44,12 @@
 /* iOS Safari, 16px'ten küçük yazı alanlarına odaklanınca sayfayı yakınlaştırır. */
 .searchInput {
   width: 100%;
-  min-height: 52px;
-  padding: 0 16px;
+  min-height: 54px;
+  padding: 0 18px;
   border: 0;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--card);
+  box-shadow: var(--shadow-pill);
   color: var(--ink);
   font: inherit;
   font-size: 16px;
@@ -61,14 +63,14 @@
 }
 
 .count {
-  padding-left: 8px;
+  padding-left: 10px;
   color: var(--ink-soft);
   font-size: 0.85rem;
 }
 
 .list {
   display: grid;
-  gap: 12px;
+  gap: 14px;
   margin: 0;
   padding: 0;
 }
@@ -76,9 +78,10 @@
 .empty {
   display: grid;
   gap: 6px;
-  padding: 24px 20px;
-  background: var(--surface);
-  border-radius: var(--radius-lg);
+  padding: 26px 22px;
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   color: var(--ink-soft);
 }
 
@@ -89,6 +92,7 @@
 }
 
 .footnote {
+  padding: 0 6px;
   color: var(--ink-soft);
   font-size: 0.8rem;
   line-height: 1.5;

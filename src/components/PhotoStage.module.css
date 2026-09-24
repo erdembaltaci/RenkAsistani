@@ -1,7 +1,7 @@
 .stage {
   display: grid;
   gap: 10px;
-  animation: rise 0.4s ease both;
+  animation: rise 0.5s var(--ease) both;
 }
 
 .frame {
@@ -13,7 +13,8 @@
   padding: 0;
   border: 0;
   border-radius: var(--radius-xl);
-  background: var(--surface);
+  background: var(--fill);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: crosshair;
   touch-action: manipulation;
@@ -24,8 +25,8 @@
 .image {
   display: block;
   max-width: 100%;
-  max-height: 40vh; /* svh desteklemeyen eski iOS için yedek */
-  max-height: 40svh;
+  max-height: 38vh; /* svh desteklemeyen eski iOS için yedek */
+  max-height: 38svh;
   width: auto;
   height: auto;
   user-select: none;
@@ -49,15 +50,17 @@
 
 .chip {
   position: absolute;
-  left: 10px;
-  bottom: 10px;
+  left: 12px;
+  bottom: 12px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  max-width: calc(100% - 20px);
+  max-width: calc(100% - 24px);
   padding: 6px 12px 6px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: var(--ink);
   font-size: 0.85rem;
   font-weight: 600;
@@ -77,6 +80,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 0 4px;
   color: var(--ink-soft);
   font-size: 0.85rem;
 }
@@ -90,7 +94,8 @@
   padding: 0 14px;
   border: 0;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--card);
+  box-shadow: var(--shadow-pill);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;

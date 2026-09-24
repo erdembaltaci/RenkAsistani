@@ -1,16 +1,31 @@
 .app {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   min-height: 100svh;
+}
+
+/* Marka renklerinin (pembe, yeşil, mavi) çok soluk, sabit bir atmosferi. Renk okumayı etkilemez:
+   yalnızca sayfanın kenarlarında ve fotoğraf/örnek alanlarının dışında kalır. */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 32% at 8% 0%, rgba(233, 184, 196, 0.32), transparent 70%),
+    radial-gradient(50% 30% at 96% 4%, rgba(185, 217, 192, 0.3), transparent 70%);
 }
 
 .page {
   max-width: var(--page-width);
   margin: 0 auto;
-  padding: max(8px, env(safe-area-inset-top)) 18px calc(112px + var(--safe-bottom));
+  padding: max(6px, env(safe-area-inset-top)) 18px calc(124px + var(--safe-bottom));
 }
 
 .main {
   display: grid;
   gap: 18px;
-  margin-top: 10px;
+  margin-top: 8px;
 }

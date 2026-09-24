@@ -32,11 +32,14 @@ export function normalizeNote(note: string): string {
   return note.trim().slice(0, MAX_NOTE_LENGTH);
 }
 
+/** Paylaşılan veya kopyalanan tek bir rengin sade metni. */
+export function formatColorText({ name, hex, tone, note }: Pick<SavedColor, 'name' | 'hex' | 'tone' | 'note'>): string {
+  return [`${name} · ${hex} · ${tone}`, note ? `Not: ${note}` : null].filter(Boolean).join('\n');
+}
+
 /** Notlar uygulamasına yapıştırılabilecek sade metin; kayıtlar silinirse yedek olarak işe yarar. */
 export function formatSavedColorsAsText(colors: readonly SavedColor[]): string {
-  return colors
-    .map(({ name, hex, tone, note }) => [`${name} · ${hex} · ${tone}`, note ? `Not: ${note}` : null].filter(Boolean).join('\n'))
-    .join('\n\n');
+  return colors.map(formatColorText).join('\n\n');
 }
 
 /** Ad, hex, ton ve notun içinde arar; Türkçe büyük/küçük harf kurallarına göre (I/ı, İ/i) karşılaştırır. */
