@@ -2,13 +2,13 @@ import { ArrowLeftIcon, BookmarkIcon, HeartIcon } from './icons';
 import styles from './AppHeader.module.css';
 
 interface AppHeaderProps {
-  recipientName: string;
+  greeting: string;
   savedCount: number;
   isSavedViewOpen: boolean;
   onToggleSaved: () => void;
 }
 
-export function AppHeader({ recipientName, savedCount, isSavedViewOpen, onToggleSaved }: AppHeaderProps) {
+export function AppHeader({ greeting, savedCount, isSavedViewOpen, onToggleSaved }: AppHeaderProps) {
   return (
     <header className={styles.header}>
       <div className={styles.topRow}>
@@ -42,7 +42,7 @@ export function AppHeader({ recipientName, savedCount, isSavedViewOpen, onToggle
       </div>
 
       <h1 className={styles.greeting}>
-        Hoş geldin {recipientName}
+        {greeting}
         <HeartIcon className={styles.heart} width={24} height={24} />
       </h1>
       <p className={styles.tagline}>Bugün hangi renkleri keşfediyoruz?</p>

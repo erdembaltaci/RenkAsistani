@@ -11,6 +11,7 @@ import { ResultCard } from './components/ResultCard';
 import { SaveColorPanel } from './components/SaveColorPanel';
 import { SavedColorsView } from './components/SavedColorsView';
 import { RECIPIENT_NAME } from './config';
+import { buildGreeting } from './domain/greeting';
 import { MAX_NOTE_LENGTH } from './domain/savedColor';
 import { MAX_PHOTOS, useColorSession } from './hooks/useColorSession';
 import { useSavedColors } from './hooks/useSavedColors';
@@ -34,7 +35,7 @@ export function App() {
     <div className={styles.app}>
       <div className={styles.page}>
         <AppHeader
-          recipientName={RECIPIENT_NAME}
+          greeting={buildGreeting(RECIPIENT_NAME)}
           savedCount={savedColors.saved.length}
           isSavedViewOpen={view === 'saved'}
           onToggleSaved={() => setView(view === 'saved' ? 'home' : 'saved')}

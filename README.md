@@ -22,6 +22,8 @@ npm test         # birim testleri
 npm run lint     # ESLint
 ```
 
+İsteğe bağlı: karşılamadaki ad, derleme sırasında `VITE_RECIPIENT_NAME` ortam değişkeninden okunur (bkz. `.env.example`).
+
 ## Yapı
 
 ```
