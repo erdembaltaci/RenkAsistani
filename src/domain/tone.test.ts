@@ -14,11 +14,14 @@ describe('analyzeTone', () => {
     expect(toneOf('#000000')).toMatchObject({ lightness: 'veryDark', chroma: 'neutral' });
   });
 
-  it('gri basamaklarını açıklıklarına göre ayırır', () => {
-    expect(toneOf('#D9D9D9').lightness).toBe('veryLight');
-    expect(toneOf('#B2B2B2').lightness).toBe('light');
+  it('gri basamaklarını sözlükteki adlarla uyumlu açıklık seviyelerine ayırır', () => {
+    expect(toneOf('#EBEBEB').lightness).toBe('veryLight');
+    expect(toneOf('#D9D9D9').lightness).toBe('light');
+    expect(toneOf('#9B9B9B').lightness).toBe('mediumLight');
     expect(toneOf('#858585').lightness).toBe('medium');
-    expect(toneOf('#5B5A59').lightness).toBe('dark');
+    expect(toneOf('#6F6F6F').lightness).toBe('dark');
+    expect(toneOf('#454545').lightness).toBe('dark');
+    expect(toneOf('#2C2E31').lightness).toBe('veryDark');
   });
 
   it('soluk pastel ile canlı rengi ayırır', () => {

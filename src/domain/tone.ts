@@ -1,6 +1,6 @@
 import type { Lab } from './types';
 
-export type LightnessLevel = 'veryDark' | 'dark' | 'medium' | 'light' | 'veryLight';
+export type LightnessLevel = 'veryDark' | 'dark' | 'medium' | 'mediumLight' | 'light' | 'veryLight';
 export type ChromaLevel = 'neutral' | 'tinted' | 'muted' | 'moderate' | 'vivid';
 
 export interface Tone {
@@ -12,11 +12,13 @@ export interface Tone {
   l: number;
 }
 
+// Sınırlar, sözlükteki gri basamaklarıyla (Açık gri ≈ L87, Gri ≈ L64, Koyu gri ≈ L47) uyumlu olacak şekilde seçildi.
 const LIGHTNESS_UPPER_BOUNDS: ReadonlyArray<readonly [number, LightnessLevel]> = [
   [22, 'veryDark'],
-  [40, 'dark'],
+  [50, 'dark'],
   [62, 'medium'],
-  [80, 'light'],
+  [74, 'mediumLight'],
+  [89, 'light'],
 ];
 
 const CHROMA_UPPER_BOUNDS: ReadonlyArray<readonly [number, ChromaLevel]> = [

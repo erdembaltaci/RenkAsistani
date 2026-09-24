@@ -10,7 +10,7 @@ interface HueSector {
   tint: string;
 }
 
-// Sınırlar, bilinen renklerin gerçek Lab ton açılarına bakılarak ayarlandı (örn. saf mavi ≈306°, mor ≈328°).
+// Sınırlar, sözlükteki renklerin gerçek Lab ton açılarına bakılarak ayarlandı: mavi adlı renkler ≈301°'ye kadar, mor adlı renkler ≈306°'den sonra başlar.
 const HUE_SECTORS: readonly HueSector[] = [
   { from: 20, label: 'kırmızı', tint: 'kırmızımsı' },
   { from: 46, label: 'kırmızımsı turuncu', tint: 'turuncumsu' },
@@ -24,7 +24,7 @@ const HUE_SECTORS: readonly HueSector[] = [
   { from: 212, label: 'yeşilimsi mavi', tint: 'mavimsi' },
   { from: 232, label: 'mavi', tint: 'mavimsi' },
   { from: 296, label: 'morumsu mavi', tint: 'morumsu' },
-  { from: 318, label: 'mor', tint: 'morumsu' },
+  { from: 306, label: 'mor', tint: 'morumsu' },
   { from: 338, label: 'kırmızımsı mor', tint: 'morumsu' },
   { from: 356, label: 'morumsu kırmızı', tint: 'pembemsi' },
 ];
@@ -33,6 +33,7 @@ const LIGHTNESS_PREFIX: Record<LightnessLevel, string> = {
   veryDark: 'Çok koyu',
   dark: 'Koyu',
   medium: 'Orta koyulukta',
+  mediumLight: 'Orta açıklıkta',
   light: 'Açık',
   veryLight: 'Çok açık',
 };
@@ -41,6 +42,7 @@ const GRAY_NAME: Record<LightnessLevel, string> = {
   veryDark: 'Çok koyu gri',
   dark: 'Koyu gri',
   medium: 'Orta gri',
+  mediumLight: 'Orta açık gri',
   light: 'Açık gri',
   veryLight: 'Çok açık gri',
 };
@@ -48,8 +50,8 @@ const GRAY_NAME: Record<LightnessLevel, string> = {
 const NEAR_WHITE_L = 94;
 const NEAR_BLACK_L = 12;
 
-const isLight = (level: LightnessLevel): boolean => level === 'light' || level === 'veryLight';
-const isDark = (level: LightnessLevel): boolean => level === 'veryDark' || level === 'dark' || level === 'medium';
+const isLight = (level: LightnessLevel): boolean => level === 'mediumLight' || level === 'light' || level === 'veryLight';
+const isBrownRange = (level: LightnessLevel): boolean => !isLight(level) || level === 'mediumLight';
 
 const isReddish = (hue: number): boolean => hue >= 338 || hue < 46;
 const isOrangeToYellow = (hue: number, upTo: number): boolean => hue >= 46 && hue < upTo;
@@ -93,11 +95,15 @@ export class TurkishToneDescriber implements ToneDescriber {
     if (isReddish(hue) && isLight(lightness)) {
       return this.withAdjective(prefix, chromaAdjective(chroma, lightness), 'pembe');
     }
-    if (isOrangeToYellow(hue, 92) && isDark(lightness) && chroma !== 'vivid') {
-      return `${prefix} ${hue < 60 ? 'kırmızımsı ' : ''}kahverengi`;
-    }
     if (isOrangeToYellow(hue, 100) && isLight(lightness) && chroma === 'muted') {
       return `${prefix} bej`;
+    }
+    if (isOrangeToYellow(hue, 92) && isBrownRange(lightness) && chroma !== 'vivid') {
+      return `${prefix} ${hue < 60 ? 'kırmızımsı ' : ''}kahverengi`;
+    }
+    // Koyu ve donuk sarı "sarı" değil, zeytin/haki olarak algılanır.
+    if (hue >= 92 && hue < 108 && !isLight(lightness) && chroma !== 'vivid') {
+      return this.withAdjective(prefix, chromaAdjective(chroma, lightness), 'zeytin yeşili');
     }
 
     return this.withAdjective(prefix, chromaAdjective(chroma, lightness), sectorFor(hue).label);
