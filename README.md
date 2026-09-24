@@ -14,6 +14,8 @@
 - **Çoklu fotoğraf:** Aynı ürün için en fazla 6 fotoğraf. Her fotoğraftan çıkan renk LAB uzayında medyanla birleştirilir. Fotoğraflar birbirinden belirgin sapıyorsa (ışık farkı vb.) uyarı verilir ve sapan fotoğraf "Farklı çıktı" ile işaretlenir.
 - **Sonuç:** Büyük renk adı, ton açıklaması, renk örneği, tek dokunuşla kopyalanan hex kodu ve en yakın ikinci ad. İki ad birbirine çok yakınsa "X ile Y arasında" notu çıkar. Renk her zaman **yazıyla da** verilir.
 - **Sözlük:** 430'dan fazla Türkçe renk adı; soluk nötr ve pastel tonlar (açık gri, ekru, nane, adaçayı, pudra pembe…) özellikle sık örneklenmiştir. Açık/koyu varyantlar hesapla değil, sözlükte tek tek tanımlıdır.
+- **Kaydedilenler:** Sonuç kartındaki "Rengi kaydet" ile ad, hex, ton ve isteğe bağlı bir not (ör. "mavi tişört, mağaza adı") kaydedilir. Kayıtlar listelenir, notu düzenlenir, iki adımlı onayla silinir; "Listeyi kopyala" ile Notlar uygulamasına yedeklenir. Kayıtlar **yalnızca o telefonun tarayıcısında** (localStorage) durur; fotoğraf kaydedilmez, sunucuya hiçbir şey gitmez.
+- **Karşılama:** Üstte kişiye özel "Hoş geldin ..." başlığı. Ad `src/config.ts` içindeki `RECIPIENT_NAME` değerinden gelir.
 - **Ton açıklaması:** "Vişne çürüğü" gibi adı bilinmeyen bir rengin ne olduğunu anlatmak için, ölçülen rengin açıklığı, doygunluğu ve tonu sade Türkçe ile tarif edilir.
 
 ## Çalıştırma
@@ -26,6 +28,11 @@ npm run preview    # derlenmiş siteyi yerelde aç
 npm test           # birim testleri
 npm run lint       # ESLint
 ```
+
+### iPhone notları
+
+- Kayıtlar Safari'nin site verisinde durur. Safari, bir siteyi uzun süre (yaklaşık 7 gün) hiç açmazsanız site verisini silebilir. Bunu önlemek için siteyi Safari'den **Paylaş → Ana Ekrana Ekle** ile ana ekrana ekleyin; ana ekran uygulaması bu silme kuralından muaftır. Ancak ana ekran uygulamasının kayıtları Safari'dekinden **ayrı** tutulur (kayıtlar ilk kullanımdan itibaren orada birikir).
+- Önemli kayıtlar için "Listeyi kopyala" ile düzenli yedek alın.
 
 Telefonda denemek için `npm run dev -- --host` çalıştırıp aynı Wi-Fi'daki telefondan bilgisayarın IP adresini açabilirsiniz. Not: tarayıcılar kamera/pano özelliklerini genelde yalnızca `https` veya `localhost` üzerinde tam destekler; Vercel'e yayınlandığında `https` olur.
 
@@ -62,7 +69,7 @@ Bağımlılık yönü: `components → hooks → services (arayüzler) → domai
 
 `src/data/colors.ts` içindeki ilgili gruba `['Ad', '#RRGGBB']` satırı ekleyin. `npm test`, tekrar eden ad/hex ve gözle ayırt edilemeyecek kadar yakın (ΔE < 2) renkleri otomatik olarak yakalar.
 
-## Vercel'e yayınlama (henüz yayınlanmadı)
+## Vercel'e yayınlama
 
 Proje statik bir Vite sitesidir; `vercel.json` hazırdır. Yayına almak için:
 
