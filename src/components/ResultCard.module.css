@@ -1,0 +1,131 @@
+.card {
+  display: grid;
+  gap: 14px;
+  padding: 24px 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  animation: rise 0.45s ease both;
+}
+
+.eyebrow {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 11vw, 3rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.tone {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.swatchRow {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) 1.2fr;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 4px;
+}
+
+.swatch {
+  min-height: 132px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  transition: background-color 0.4s ease;
+}
+
+.hexBlock {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+}
+
+.hexLabel {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.hex {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.copy,
+.reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.copy:active,
+.reset:active {
+  transform: scale(0.98);
+}
+
+.copy {
+  margin-top: 6px;
+  border: 1.5px solid var(--ink);
+  background: var(--surface);
+}
+
+.alternative {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.details {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.details dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 4px 0 0;
+}
+
+.details dt {
+  font-weight: 600;
+}
+
+.details dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.reset {
+  border: 1.5px solid var(--line-strong);
+  background: transparent;
+}

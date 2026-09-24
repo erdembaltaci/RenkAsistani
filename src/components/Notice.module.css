@@ -1,0 +1,42 @@
+.notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  animation: rise 0.35s ease both;
+}
+
+.icon {
+  flex: none;
+  margin-top: 2px;
+}
+
+.title {
+  font-weight: 650;
+  margin-bottom: 2px;
+}
+
+.body {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.warning {
+  background: var(--warn-bg);
+  border-color: var(--warn-line);
+  color: var(--warn-ink);
+}
+
+.error {
+  background: var(--error-bg);
+  border-color: var(--error-line);
+  color: var(--error-ink);
+}
+
+.info {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink-soft);
+}
