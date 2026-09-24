@@ -4,6 +4,7 @@ import type { ColorSampler } from './ColorSampler';
 import type { ColorSharer } from './ColorSharer';
 import type { ColorStore } from './ColorStore';
 import type { ImageLoader } from './ImageLoader';
+import type { KeyValueStorage } from './KeyValueStorage';
 import type { LightCorrector } from './LightCorrector';
 import type { NotesExporter } from './NotesExporter';
 import type { ToneDescriber } from './ToneDescriber';
@@ -19,4 +20,6 @@ export interface AppServices {
   colorStore: ColorStore;
   sharer: ColorSharer;
   exporter: NotesExporter;
+  /** Küçük kullanıcı tercihleri (ör. "ana ekrana ekle ipucunu kapattım"); notlardan ayrıdır. */
+  preferences: KeyValueStorage;
 }

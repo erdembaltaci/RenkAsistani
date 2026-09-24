@@ -61,5 +61,6 @@ export function createServices(): AppServices {
       download: downloadFile,
       preferShare: window.matchMedia('(pointer: coarse)').matches,
     }),
+    preferences: storage,
   };
 }

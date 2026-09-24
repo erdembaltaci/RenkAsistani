@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DeviationNotice } from './components/DeviationNotice';
 import { Disclaimer } from './components/Disclaimer';
+import { InstallBanner } from './components/InstallBanner';
 import { Notice } from './components/Notice';
 import { PhotoPicker } from './components/PhotoPicker';
 import { PhotoStage } from './components/PhotoStage';
@@ -17,6 +18,7 @@ import { buildGreeting } from './domain/greeting';
 import { MAX_CODE_LENGTH, MAX_NOTE_LENGTH } from './domain/savedColor';
 import type { ComparedColor } from './hooks/useCompareSelection';
 import { MAX_PHOTOS, useColorSession } from './hooks/useColorSession';
+import { useInstallPrompt } from './hooks/useInstallPrompt';
 import { useSavedColors } from './hooks/useSavedColors';
 import { useShareColor } from './hooks/useShareColor';
 import styles from './App.module.css';
@@ -29,6 +31,7 @@ export function App() {
   const session = useColorSession();
   const savedColors = useSavedColors();
   const { share, message: shareMessage } = useShareColor();
+  const installPrompt = useInstallPrompt();
   const [view, setView] = useState<View>('home');
   const [compareBase, setCompareBase] = useState<ComparedColor | null>(null);
   const { activePhoto, report } = session;
@@ -136,7 +139,16 @@ export function App() {
               ) : (
                 <Welcome
                   footer={
-                    <RecentNotes colors={savedColors.saved.slice(0, RECENT_NOTES_COUNT)} onOpen={() => openNotes()} />
+                    <>
+                      {installPrompt.hint && (
+                        <InstallBanner
+                          hint={installPrompt.hint}
+                          onInstall={() => void installPrompt.install()}
+                          onDismiss={installPrompt.dismiss}
+                        />
+                      )}
+                      <RecentNotes colors={savedColors.saved.slice(0, RECENT_NOTES_COUNT)} onOpen={() => openNotes()} />
+                    </>
                   }
                 >
                   {picker('hero')}

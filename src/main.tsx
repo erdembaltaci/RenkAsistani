@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { createServices } from './compositionRoot';
 import { ServicesProvider } from './hooks/ServicesProvider';
+import { registerServiceWorker } from './registerServiceWorker';
 import './styles/global.css';
 
 const root = document.getElementById('root');
@@ -18,3 +19,5 @@ createRoot(root).render(
     </ServicesProvider>
   </StrictMode>,
 );
+
+registerServiceWorker();

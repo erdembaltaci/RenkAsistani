@@ -14,6 +14,7 @@ Backend, veritabanı ve yapay zekâ API'si yoktur; her şey tarayıcıda (Canvas
 - İki rengi karşılaştırma (CIEDE2000 ΔE): şu anki renk ile bir not, ya da iki not
 - Fotoğraftaki beyaz kâğıda göre ışık düzeltme (isteğe bağlı)
 - Rengi renk kartı görseli olarak paylaşma (telefonun paylaşım penceresi, yoksa WhatsApp bağlantısı)
+- Ana ekrana eklenebilir (PWA) ve çevrimdışı açılır; arama motorları ve bağlantı önizlemesi için SEO etiketleri
 
 ## Çalıştırma
 
@@ -25,7 +26,7 @@ npm test         # birim testleri
 npm run lint     # ESLint
 ```
 
-İsteğe bağlı: karşılamadaki ad, derleme sırasında `VITE_RECIPIENT_NAME` ortam değişkeninden okunur (bkz. `.env.example`).
+İsteğe bağlı ortam değişkenleri (karşılama adı, site adresi, Search Console doğrulaması) için `.env.example` dosyasına bakın.
 
 ## Yapı
 

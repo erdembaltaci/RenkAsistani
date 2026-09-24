@@ -2,26 +2,76 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>Rengim – Renk Asistanı | Fotoğraftan Renk Adı ve Hex Kodu</title>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
+      name="description"
+      content="Ürün veya kumaş fotoğrafından rengin Türkçe adını, hex kodunu ve tonunu bulur. Renkleri notla kaydeder, iki rengi karşılaştırır. Fotoğraflar cihazdan çıkmaz."
     />
-    <meta name="theme-color" content="#f6f6f4" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="__SITE_URL__/" />
+
+    <!-- Uygulama görünümü -->
+    <meta name="theme-color" content="#f3f3f5" />
     <meta name="color-scheme" content="light" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Renk Asistanı" />
-    <meta
-      name="description"
-      content="Ürün veya kumaş fotoğrafından rengin Türkçe adını ve hex kodunu bulur. Fotoğraflar cihazdan çıkmaz."
-    />
+    <meta name="apple-mobile-web-app-title" content="Rengim" />
+    <meta name="application-name" content="Rengim" />
+
+    <!-- Simgeler -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <title>Renk Asistanı</title>
+
+    <!-- Bağlantı önizlemesi (WhatsApp, Mesajlar, arama sonuçları) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rengim" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:title" content="Rengim – Renk Asistanı" />
+    <meta property="og:description" content="Fotoğraftan rengin adını ve hex kodunu bul. Ürün ve kumaşlar için Türkçe renk asistanı." />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rengim: fotoğraftan renk adı ve hex kodu bulan uygulama" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rengim – Renk Asistanı" />
+    <meta name="twitter:description" content="Fotoğraftan rengin adını ve hex kodunu bul." />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+
+    <!-- Arama motorları için yapılandırılmış veri -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Rengim",
+        "alternateName": "Renk Asistanı",
+        "url": "__SITE_URL__/",
+        "description": "Ürün veya kumaş fotoğrafından rengin Türkçe adını, hex kodunu ve tonunu bulan web uygulaması.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Modern bir tarayıcı gerektirir",
+        "inLanguage": "tr",
+        "image": "__SITE_URL__/og-image.png",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="font-family: system-ui, sans-serif; max-width: 34rem; margin: 3rem auto; padding: 0 1rem">
+        <h1>Rengim – Renk Asistanı</h1>
+        <p>
+          Ürün veya kumaş fotoğrafından rengin Türkçe adını ve hex kodunu bulur. Uygulamanın çalışması için tarayıcınızda
+          JavaScript açık olmalıdır.
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
