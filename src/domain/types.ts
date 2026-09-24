@@ -29,3 +29,8 @@ export interface WeightedLab {
   lab: Lab;
   weight: number;
 }
+
+export interface NamedColor {
+  name: string;
+  hex: string;
+}
