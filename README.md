@@ -13,7 +13,7 @@ Backend, veritabanı ve yapay zekâ API'si yoktur; her şey tarayıcıda (Canvas
 - Rengi kod/etiket ve notla kaydetme, notlarda arama, Excel için CSV dışa aktarma (yalnızca cihazın tarayıcısında saklanır)
 - İki rengi karşılaştırma (CIEDE2000 ΔE): şu anki renk ile bir not, ya da iki not
 - Fotoğraftaki beyaz kâğıda göre ışık düzeltme (isteğe bağlı)
-- Rengi renk kartı görseli olarak paylaşma (telefonun paylaşım penceresi, yoksa WhatsApp bağlantısı)
+- Rengi renk kartı görseli olarak paylaşma (telefonun paylaşım penceresi; desteklenmiyorsa görsel panoya kopyalanır veya indirilir)
 - Ana ekrana eklenebilir (PWA) ve çevrimdışı açılır; arama motorları ve bağlantı önizlemesi için SEO etiketleri
 
 ## Çalıştırma

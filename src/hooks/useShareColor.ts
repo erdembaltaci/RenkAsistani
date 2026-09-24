@@ -3,10 +3,12 @@ import type { ColorCard } from '../services/ColorCardRenderer';
 import type { ShareOutcome } from '../services/ColorSharer';
 import { useServices } from './servicesContext';
 
-const MESSAGE_MS = 2600;
+const MESSAGE_MS = 3200;
 
 const MESSAGES: Partial<Record<ShareOutcome, string>> = {
-  copied: 'Paylaşım açılamadı; metin panoya kopyalandı.',
+  copiedImage: 'Görsel kopyalandı. Yapıştırabilirsin.',
+  downloaded: 'Görsel indirildi.',
+  copiedText: 'Metin kopyalandı.',
   failed: 'Paylaşılamadı.',
 };
 

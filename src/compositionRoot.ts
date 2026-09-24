@@ -2,7 +2,7 @@ import { COLOR_PALETTE } from './data/colors';
 import type { AppServices } from './services/AppServices';
 import { CanvasColorCardRenderer } from './services/CanvasColorCardRenderer';
 import { CanvasImageLoader } from './services/CanvasImageLoader';
-import { copyTextToClipboard } from './services/clipboard';
+import { copyImageToClipboard, copyTextToClipboard } from './services/clipboard';
 import type { KeyValueStorage } from './services/KeyValueStorage';
 import { LocalStorageColorStore } from './services/LocalStorageColorStore';
 import { MedianColorAggregator } from './services/MedianColorAggregator';
@@ -51,9 +51,8 @@ export function createServices(): AppServices {
     sharer: new WebColorSharer({
       navigator,
       renderer: new CanvasColorCardRenderer(),
-      openUrl: (url) => {
-        window.open(url, '_blank', 'noopener');
-      },
+      copyImage: copyImageToClipboard,
+      download: downloadFile,
       copyText: copyTextToClipboard,
     }),
     exporter: new WebNotesExporter({

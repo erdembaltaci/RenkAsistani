@@ -24,3 +24,14 @@ export async function copyTextToClipboard(text: string): Promise<boolean> {
     return copyWithSelection(text);
   }
 }
+
+/** Görseli panoya koyar; WhatsApp Web/Masaüstü gibi yerlere yapıştırılabilir. Desteklenmiyorsa false döner. */
+export async function copyImageToClipboard(file: Blob): Promise<boolean> {
+  try {
+    if (typeof ClipboardItem === 'undefined' || !navigator.clipboard?.write) return false;
+    await navigator.clipboard.write([new ClipboardItem({ [file.type]: file })]);
+    return true;
+  } catch {
+    return false;
+  }
+}

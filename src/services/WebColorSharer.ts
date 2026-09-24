@@ -6,33 +6,47 @@ import { isAbortError, type ShareCapableNavigator } from './ShareCapableNavigato
 interface WebColorSharerDeps {
   navigator: ShareCapableNavigator;
   renderer: ColorCardRenderer;
-  openUrl: (url: string) => void;
+  copyImage: (file: File) => Promise<boolean>;
+  download: (file: File) => void;
   copyText: (text: string) => Promise<boolean>;
 }
 
+/**
+ * Paylaşılan şey her zaman "renk kartı" görselidir. Sıra: paylaşım penceresi (dosya destekleniyorsa) →
+ * görseli panoya kopyala → PNG indir. Düz metin yalnızca görsel hiç çizilemezse kullanılır.
+ */
 export class WebColorSharer implements ColorSharer {
   constructor(private readonly deps: WebColorSharerDeps) {}
 
-  // Önemli: `share` çağrısından önce hiçbir `await` olmamalı. Safari, paylaşım penceresini yalnızca
+  // Önemli: paylaşım penceresi veya pano yazımı çağrılmadan önce hiçbir `await` olmamalı. Safari, bunları yalnızca
   // dokunuşla aynı işlem turunda açmaya izin verir; kart bu yüzden senkron çizilir.
   async share(color: ColorCard): Promise<ShareOutcome> {
-    const text = formatColorText(color);
-    const { navigator, renderer, openUrl, copyText } = this.deps;
+    const { navigator, renderer, copyImage, download, copyText } = this.deps;
+    const file = renderer.render(color);
 
-    if (typeof navigator.share !== 'function') {
-      openUrl(`https://wa.me/?text=${encodeURIComponent(text)}`);
-      return 'whatsapp';
+    if (!file) {
+      return (await copyText(formatColorText(color))) ? 'copiedText' : 'failed';
     }
 
+    // Yalnızca görsel gönderilir: kart zaten ad, hex, ton ve notu içerir; bazı uygulamalar dosyayla birlikte gelen
+    // metni atlar veya görselin yerine yalnızca metni alır.
+    if (typeof navigator.share === 'function' && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: color.name });
+        return 'shared';
+      } catch (error) {
+        if (isAbortError(error)) return 'cancelled';
+        // Paylaşım penceresi açılamadıysa pano ve indirme denenir.
+      }
+    }
+
+    if (await copyImage(file)) return 'copiedImage';
+
     try {
-      const file = renderer.render(color);
-      const withImage: ShareData | null = file ? { files: [file], text } : null;
-      const data: ShareData = withImage && navigator.canShare?.(withImage) ? withImage : { text };
-      await navigator.share(data);
-      return 'shared';
-    } catch (error) {
-      if (isAbortError(error)) return 'cancelled';
-      return (await copyText(text)) ? 'copied' : 'failed';
+      download(file);
+      return 'downloaded';
+    } catch {
+      return 'failed';
     }
   }
 }
