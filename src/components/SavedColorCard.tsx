@@ -50,14 +50,13 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
           <label className="visually-hidden" htmlFor={`note-${color.id}`}>
             Not
           </label>
-          <input
+          <textarea
             id={`note-${color.id}`}
             className={styles.input}
-            type="text"
+            rows={3}
             value={draft}
             maxLength={MAX_NOTE_LENGTH}
             placeholder="Not ekle"
-            enterKeyHint="done"
             autoComplete="off"
             autoFocus
             onChange={(event) => setDraft(event.target.value)}
@@ -72,7 +71,7 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
           </div>
         </form>
       ) : (
-        <p className={color.note ? styles.note : styles.noNote}>{color.note ? `Not: ${color.note}` : 'Not eklenmemiş'}</p>
+        <p className={color.note ? styles.note : styles.noNote}>{color.note || 'Not eklenmemiş'}</p>
       )}
 
       <div className={styles.footer}>
@@ -93,7 +92,7 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
               <button type="button" className={styles.iconButton} onClick={startEditing} aria-label={`${color.name} notunu düzenle`}>
                 <PencilIcon width={20} height={20} />
               </button>
-              <button type="button" className={styles.iconButton} onClick={() => setMode('confirmDelete')} aria-label={`${color.name} kaydını sil`}>
+              <button type="button" className={styles.iconButton} onClick={() => setMode('confirmDelete')} aria-label={`${color.name} notunu sil`}>
                 <TrashIcon width={20} height={20} />
               </button>
             </span>

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { CheckIcon, BookmarkIcon } from './icons';
+import { BookmarkIcon, CheckIcon } from './icons';
 import styles from './SaveColorPanel.module.css';
 
 interface SaveColorPanelProps {
@@ -25,10 +25,10 @@ export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColor
       <div className={styles.saved} role="status">
         <p className={styles.savedText}>
           <CheckIcon width={20} height={20} />
-          Kaydedildi
+          Notlarına eklendi
         </p>
         <button type="button" className={styles.link} onClick={onOpenSaved}>
-          Kaydedilenlere git
+          Notlarıma git
         </button>
       </div>
     );
@@ -40,21 +40,23 @@ export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColor
         <label className={styles.label} htmlFor="save-note">
           Not (isteğe bağlı)
         </label>
-        <input
+        <textarea
           id="save-note"
           className={styles.input}
-          type="text"
+          rows={3}
           value={note}
           maxLength={maxNoteLength}
-          placeholder="ör. mavi tişört, mağaza adı, kumaş kodu"
-          enterKeyHint="done"
+          placeholder="ör. A15 nolu üretim, mavi ip"
           autoComplete="off"
           autoFocus
           onChange={(event) => setNote(event.target.value)}
         />
+        <p className={styles.counter}>
+          {note.length} / {maxNoteLength}
+        </p>
         <div className={styles.actions}>
           <button type="submit" className={styles.primary}>
-            Kaydet
+            Notlarıma ekle
           </button>
           <button type="button" className={styles.secondary} onClick={() => setState('idle')}>
             Vazgeç
@@ -67,7 +69,7 @@ export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColor
   return (
     <button type="button" className={styles.trigger} onClick={() => setState('editing')}>
       <BookmarkIcon width={20} height={20} />
-      Rengi kaydet
+      Notlarıma ekle
     </button>
   );
 }

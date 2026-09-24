@@ -12,11 +12,10 @@
   margin: 0 auto;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-lg);
-  background: var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
   overflow: hidden;
   cursor: crosshair;
-  box-shadow: var(--shadow-soft);
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
@@ -25,8 +24,8 @@
 .image {
   display: block;
   max-width: 100%;
-  max-height: 42vh; /* svh desteklemeyen eski iOS için yedek */
-  max-height: 42svh;
+  max-height: 40vh; /* svh desteklemeyen eski iOS için yedek */
+  max-height: 40svh;
   width: auto;
   height: auto;
   user-select: none;
@@ -60,7 +59,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
   color: var(--ink);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
   pointer-events: none;
 }
@@ -79,7 +78,7 @@
   justify-content: space-between;
   gap: 12px;
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .autoButton {
@@ -87,12 +86,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0 14px;
+  border: 0;
   border-radius: 999px;
-  border: 1.5px solid var(--line-strong);
   background: var(--surface);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }

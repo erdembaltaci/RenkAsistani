@@ -11,22 +11,23 @@
 .item {
   position: relative;
   flex: none;
-  width: 88px;
+  width: 76px;
   display: grid;
   gap: 4px;
   scroll-snap-align: start;
 }
 
 .thumb {
-  width: 88px;
-  height: 88px;
+  width: 76px;
+  height: 76px;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--line);
+  background: var(--surface);
   cursor: pointer;
-  outline-offset: 2px;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .thumb img {
@@ -38,26 +39,28 @@
 
 .active {
   border-color: var(--ink);
-  box-shadow: 0 0 0 2px var(--surface) inset;
 }
 
 .remove {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -6px;
+  right: -6px;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
-  border: 1.5px solid var(--line-strong);
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--on-accent);
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .name {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.25;
   overflow-wrap: anywhere;
@@ -73,6 +76,6 @@
   border: 1px solid var(--warn-line);
   background: var(--warn-bg);
   color: var(--warn-ink);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 650;
 }

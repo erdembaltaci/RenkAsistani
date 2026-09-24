@@ -1,48 +1,48 @@
 import type { ReactNode } from 'react';
 import type { ReportView } from '../hooks/useColorSession';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
-import { CheckIcon, CopyIcon, ResetIcon } from './icons';
+import { CheckIcon, CopyIcon } from './icons';
 import styles from './ResultCard.module.css';
 
 interface ResultCardProps {
   report: ReportView;
-  onReset: () => void;
-  /** Sonucun altına konacak eylemler (ör. kaydet paneli). */
+  /** Sonucun altına konacak eylemler (ör. notlara ekle paneli). */
   actions?: ReactNode;
 }
 
 const COPY_LABEL = { idle: 'Kopyala', copied: 'Kopyalandı', failed: 'Kopyalanamadı' } as const;
 
-export function ResultCard({ report, onReset, actions }: ResultCardProps) {
+export function ResultCard({ report, actions }: ResultCardProps) {
   const { status, copy } = useCopyToClipboard();
   const { lab, rgb } = report;
 
   return (
-    <section className={styles.card} aria-labelledby="result-name">
-      <p className={styles.eyebrow}>
-        Tahmini renk{report.photoCount > 1 ? ` · ${report.photoCount} fotoğraftan` : ''}
-      </p>
-      <h2 id="result-name" className={styles.name} aria-live="polite">
-        {report.name}
-      </h2>
-      <p className={styles.tone}>Kısaca: {report.tone}</p>
-
-      <div className={styles.swatchRow}>
-        <div className={styles.swatch} style={{ background: report.hex }} role="img" aria-label={`Renk örneği ${report.hex}`} />
-        <div className={styles.hexBlock}>
-          <p className={styles.hexLabel}>Hex kodu</p>
-          <p className={styles.hex}>{report.hex}</p>
-          <button type="button" className={styles.copy} onClick={() => copy(report.hex)} aria-live="polite">
-            {status === 'copied' ? <CheckIcon width={20} height={20} /> : <CopyIcon width={20} height={20} />}
-            {COPY_LABEL[status]}
-          </button>
-        </div>
+    <section className={styles.result} aria-labelledby="result-name">
+      <div className={styles.head}>
+        <p className={styles.eyebrow}>
+          Tahmini renk{report.photoCount > 1 ? ` · ${report.photoCount} fotoğraftan` : ''}
+        </p>
+        <h2 id="result-name" className={styles.name} aria-live="polite">
+          {report.name}
+        </h2>
+        <p className={styles.tone}>{report.tone}</p>
       </div>
+
+      <button type="button" className={styles.hex} onClick={() => copy(report.hex)} aria-live="polite">
+        <span className={styles.hexLeft}>
+          <span className={styles.dot} style={{ background: report.hex }} role="img" aria-label={`Renk örneği ${report.hex}`} />
+          <span className={styles.hexCode}>{report.hex}</span>
+        </span>
+        <span className={styles.hexAction}>
+          {status === 'copied' ? <CheckIcon width={18} height={18} /> : <CopyIcon width={18} height={18} />}
+          {COPY_LABEL[status]}
+        </span>
+      </button>
 
       <p className={styles.alternative}>
         {report.isAmbiguous ? (
           <>
-            Bu renk <strong>{report.name}</strong> ile <strong>{report.secondName}</strong> arasında kalıyor.
+            <strong>{report.name}</strong> ile <strong>{report.secondName}</strong> arasında kalıyor.
           </>
         ) : (
           <>
@@ -70,11 +70,6 @@ export function ResultCard({ report, onReset, actions }: ResultCardProps) {
           </dd>
         </dl>
       </details>
-
-      <button type="button" className={styles.reset} onClick={onReset}>
-        <ResetIcon width={20} height={20} />
-        Yeni ürün
-      </button>
     </section>
   );
 }

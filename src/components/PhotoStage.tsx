@@ -43,15 +43,11 @@ export function PhotoStage({ photo, onPick, onAuto }: PhotoStageProps) {
       </button>
 
       <div className={styles.caption}>
-        <p>
-          {photo.focus
-            ? 'Renk, işaretlediğin noktadan alındı.'
-            : 'Renk, fotoğrafın ortasından otomatik alındı. Başka bir yerden almak için fotoğrafa dokun.'}
-        </p>
+        <p>{photo.focus ? 'Renk, işaretlediğin noktadan alındı.' : 'Başka bir yerin rengi için fotoğrafa dokun.'}</p>
         {photo.focus && (
           <button type="button" className={styles.autoButton} onClick={onAuto}>
-            <ResetIcon width={18} height={18} />
-            Otomatiğe dön
+            <ResetIcon width={16} height={16} />
+            Otomatik
           </button>
         )}
       </div>

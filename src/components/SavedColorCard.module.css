@@ -4,24 +4,22 @@
   padding: 16px;
   list-style: none;
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
   animation: rise 0.35s ease both;
 }
 
 .summary {
   display: grid;
-  grid-template-columns: 84px 1fr;
+  grid-template-columns: 72px 1fr;
   gap: 14px;
   align-items: center;
 }
 
 .swatch {
-  width: 84px;
-  height: 84px;
+  width: 72px;
+  height: 72px;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .text {
@@ -31,16 +29,16 @@
 }
 
 .name {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
 
 .tone {
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .hex {
@@ -48,15 +46,15 @@
   align-items: center;
   gap: 6px;
   justify-self: start;
-  min-height: 44px;
+  min-height: 40px;
   margin-top: 2px;
   padding: 0 12px;
+  border: 0;
   border-radius: 999px;
-  border: 1.5px solid var(--line-strong);
-  background: var(--surface);
+  background: var(--bg);
   color: var(--ink);
   font-weight: 650;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   -webkit-appearance: none;
@@ -67,6 +65,7 @@
 .noNote {
   font-size: 0.95rem;
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 .noNote {
@@ -81,16 +80,23 @@
 /* iOS Safari, 16px'ten küçük yazı alanlarına odaklanınca sayfayı yakınlaştırır. */
 .input {
   width: 100%;
-  min-height: 48px;
-  padding: 0 14px;
+  min-height: 96px;
+  padding: 12px 14px;
   border: 1.5px solid var(--line-strong);
   border-radius: var(--radius-md);
-  background: var(--surface);
+  background: var(--bg);
   color: var(--ink);
   font: inherit;
   font-size: 16px;
+  line-height: 1.4;
+  resize: vertical;
   -webkit-appearance: none;
   appearance: none;
+}
+
+.input:focus {
+  border-color: var(--ink);
+  outline: none;
 }
 
 .row {
@@ -105,23 +111,22 @@
 .secondarySmall {
   min-height: 48px;
   padding: 0 16px;
-  border-radius: var(--radius-md);
-  font-weight: 600;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 650;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .primary {
-  border: 1.5px solid var(--accent);
   background: var(--accent);
   color: var(--on-accent);
 }
 
 .secondary,
 .secondarySmall {
-  border: 1.5px solid var(--line-strong);
-  background: transparent;
+  background: var(--bg);
   color: var(--ink);
 }
 
@@ -130,14 +135,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  border-top: 1px solid var(--line-strong);
   min-height: 56px;
 }
 
 .date {
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
 }
 
 .tools {
@@ -169,7 +174,6 @@
 
 .danger {
   min-height: 44px;
-  border: 1.5px solid var(--error-line);
   background: var(--error-bg);
   color: var(--error-ink);
 }

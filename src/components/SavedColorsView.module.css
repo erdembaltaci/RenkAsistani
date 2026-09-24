@@ -13,10 +13,9 @@
 }
 
 .title {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .copyAll {
@@ -25,8 +24,8 @@
   gap: 8px;
   min-height: 44px;
   padding: 0 14px;
+  border: 0;
   border-radius: 999px;
-  border: 1.5px solid var(--line-strong);
   background: var(--surface);
   color: var(--ink);
   font-weight: 600;
@@ -36,9 +35,40 @@
   appearance: none;
 }
 
+.search {
+  display: grid;
+  gap: 6px;
+}
+
+/* iOS Safari, 16px'ten küçük yazı alanlarına odaklanınca sayfayı yakınlaştırır. */
+.searchInput {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.searchInput:focus {
+  outline: 2px solid var(--ink);
+  outline-offset: 0;
+}
+
+.count {
+  padding-left: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
 .list {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
   padding: 0;
 }
@@ -48,7 +78,6 @@
   gap: 6px;
   padding: 24px 20px;
   background: var(--surface);
-  border: 1px dashed var(--line-strong);
   border-radius: var(--radius-lg);
   color: var(--ink-soft);
 }
@@ -61,6 +90,6 @@
 
 .footnote {
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1.5;
 }

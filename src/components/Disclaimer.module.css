@@ -1,0 +1,14 @@
+.note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 4px 2px;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.icon {
+  flex: none;
+  margin-top: 2px;
+}

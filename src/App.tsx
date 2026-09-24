@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { AppHeader } from './components/AppHeader';
 import { DeviationNotice } from './components/DeviationNotice';
 import { Disclaimer } from './components/Disclaimer';
-import { EmptyState } from './components/EmptyState';
 import { Notice } from './components/Notice';
 import { PhotoPicker } from './components/PhotoPicker';
 import { PhotoStage } from './components/PhotoStage';
@@ -10,6 +8,8 @@ import { PhotoStrip } from './components/PhotoStrip';
 import { ResultCard } from './components/ResultCard';
 import { SaveColorPanel } from './components/SaveColorPanel';
 import { SavedColorsView } from './components/SavedColorsView';
+import { TopBar, type TopBarMode } from './components/TopBar';
+import { Welcome } from './components/Welcome';
 import { RECIPIENT_NAME } from './config';
 import { buildGreeting } from './domain/greeting';
 import { MAX_NOTE_LENGTH } from './domain/savedColor';
@@ -17,7 +17,7 @@ import { MAX_PHOTOS, useColorSession } from './hooks/useColorSession';
 import { useSavedColors } from './hooks/useSavedColors';
 import styles from './App.module.css';
 
-type View = 'home' | 'saved';
+type View = 'home' | 'notes';
 
 export function App() {
   const session = useColorSession();
@@ -25,23 +25,37 @@ export function App() {
   const [view, setView] = useState<View>('home');
   const { activePhoto, report } = session;
 
-  const showHome = () => setView('home');
+  const hasResult = activePhoto !== null && report !== null;
+  const mode: TopBarMode = view === 'notes' ? 'notes' : hasResult ? 'result' : 'welcome';
+
   const handleFiles = (files: File[]) => {
-    showHome();
+    setView('home');
     void session.addFiles(files);
   };
+
+  const picker = (variant: 'hero' | 'bar') => (
+    <PhotoPicker
+      variant={variant}
+      onFiles={handleFiles}
+      isLoading={session.isLoading}
+      canAddMore={session.canAddMore}
+      maxPhotos={MAX_PHOTOS}
+    />
+  );
 
   return (
     <div className={styles.app}>
       <div className={styles.page}>
-        <AppHeader
+        <TopBar
+          mode={mode}
           greeting={buildGreeting(RECIPIENT_NAME)}
           savedCount={savedColors.saved.length}
-          isSavedViewOpen={view === 'saved'}
-          onToggleSaved={() => setView(view === 'saved' ? 'home' : 'saved')}
+          onOpenNotes={() => setView('notes')}
+          onBack={mode === 'notes' ? () => setView('home') : session.reset}
         />
+
         <main className={styles.main}>
-          {view === 'saved' ? (
+          {view === 'notes' ? (
             <SavedColorsView
               colors={savedColors.saved}
               listText={savedColors.listText}
@@ -73,7 +87,6 @@ export function App() {
                   <DeviationNotice kind={report.deviation} />
                   <ResultCard
                     report={report}
-                    onReset={session.reset}
                     actions={
                       <>
                         {savedColors.error && <Notice variant="error">{savedColors.error}</Notice>}
@@ -83,27 +96,22 @@ export function App() {
                           onSave={(note) =>
                             savedColors.save({ name: report.name, hex: report.hex, tone: report.tone, note })
                           }
-                          onOpenSaved={() => setView('saved')}
+                          onOpenSaved={() => setView('notes')}
                         />
                       </>
                     }
                   />
+                  <Disclaimer />
                 </>
               ) : (
-                <EmptyState />
+                <Welcome>{picker('hero')}</Welcome>
               )}
-
-              <Disclaimer />
             </>
           )}
         </main>
       </div>
-      <PhotoPicker
-        onFiles={handleFiles}
-        isLoading={session.isLoading}
-        canAddMore={session.canAddMore}
-        maxPhotos={MAX_PHOTOS}
-      />
+
+      {view === 'home' && hasResult && picker('bar')}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export const MAX_NOTE_LENGTH = 200;
+export const MAX_NOTE_LENGTH = 300;
 
 export interface SavedColor {
   id: string;
@@ -37,4 +37,13 @@ export function formatSavedColorsAsText(colors: readonly SavedColor[]): string {
   return colors
     .map(({ name, hex, tone, note }) => [`${name} · ${hex} · ${tone}`, note ? `Not: ${note}` : null].filter(Boolean).join('\n'))
     .join('\n\n');
+}
+
+/** Ad, hex, ton ve notun içinde arar; Türkçe büyük/küçük harf kurallarına göre (I/ı, İ/i) karşılaştırır. */
+export function filterSavedColors(colors: readonly SavedColor[], query: string): SavedColor[] {
+  const needle = query.trim().toLocaleLowerCase('tr');
+  if (!needle) return [...colors];
+  return colors.filter(({ name, hex, tone, note }) =>
+    [name, hex, tone, note].some((field) => field.toLocaleLowerCase('tr').includes(needle)),
+  );
 }

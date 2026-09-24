@@ -6,11 +6,11 @@
 .page {
   max-width: var(--page-width);
   margin: 0 auto;
-  padding: max(12px, env(safe-area-inset-top)) 16px calc(140px + var(--safe-bottom));
+  padding: max(8px, env(safe-area-inset-top)) 18px calc(112px + var(--safe-bottom));
 }
 
 .main {
   display: grid;
-  gap: 16px;
-  margin-top: 12px;
+  gap: 18px;
+  margin-top: 10px;
 }
