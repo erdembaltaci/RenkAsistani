@@ -22,7 +22,7 @@ export function ResultCard({ report, onShare, shareMessage, canCompare, onCompar
   const { status, copy } = useCopyToClipboard();
   const { lab, rgb } = report;
 
-  const eyebrow = ['Tahmini renk', report.photoCount > 1 ? `${report.photoCount} fotoğraftan` : null, report.isLightCorrected ? 'ışık düzeltildi' : null]
+  const eyebrow = ['Tahmini renk', report.photoCount > 1 ? `${report.photoCount} fotoğraf` : null, report.isLightCorrected ? 'ışık düzeltildi' : null]
     .filter(Boolean)
     .join(' · ');
 
@@ -64,15 +64,8 @@ export function ResultCard({ report, onShare, shareMessage, canCompare, onCompar
         )}
 
         <p className={styles.alternative}>
-          {report.isAmbiguous ? (
-            <>
-              <strong>{report.name}</strong> ile <strong>{report.secondName}</strong> arasında kalıyor.
-            </>
-          ) : (
-            <>
-              En yakın ikinci ad: <strong>{report.secondName}</strong>
-            </>
-          )}
+          {report.isAmbiguous ? 'Arada: ' : 'Yakın: '}
+          <strong>{report.secondName}</strong>
         </p>
 
         {actions}
@@ -80,7 +73,7 @@ export function ResultCard({ report, onShare, shareMessage, canCompare, onCompar
         {canCompare && (
           <button type="button" className={styles.compare} onClick={onCompare}>
             <CompareIcon width={20} height={20} />
-            Kayıtlı bir notla karşılaştır
+            Karşılaştır
           </button>
         )}
 

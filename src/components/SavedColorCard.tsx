@@ -92,7 +92,7 @@ export function SavedColorCard({ color, onUpdate, onRemove, selection }: SavedCo
           </div>
         </form>
       ) : (
-        <p className={color.note ? styles.note : styles.noNote}>{color.note || 'Not eklenmemiş'}</p>
+        color.note && <p className={styles.note}>{color.note}</p>
       )}
 
       {message && (

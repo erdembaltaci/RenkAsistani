@@ -17,7 +17,7 @@ export function Welcome({ children, footer }: WelcomeProps) {
         öğrenelim?
       </h2>
       {children}
-      <p className={styles.tip}>Gün ışığında, ürünü kadrajın ortasına alarak çek.</p>
+      <p className={styles.tip}>Gün ışığında çek.</p>
       {footer}
     </section>
   );

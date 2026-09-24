@@ -107,6 +107,12 @@ export const SunIcon = (props: IconProps) => (
   </svg>
 );
 
+export const MoveIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M12 3v18M3 12h18M12 3 9.2 5.8M12 3l2.8 2.8M12 21l-2.8-2.8M12 21l2.8-2.8M3 12l2.8-2.8M3 12l2.8 2.8M21 12l-2.8-2.8M21 12l-2.8 2.8" />
+  </svg>
+);
+
 export const CompareIcon = (props: IconProps) => (
   <svg {...base} {...props}>
     <rect x="3.5" y="5" width="7.5" height="14" rx="2.2" />

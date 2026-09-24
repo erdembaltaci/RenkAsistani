@@ -16,11 +16,10 @@ export function InstallBanner({ hint, onInstall, onDismiss }: InstallBannerProps
         <h2 className={styles.title}>Ana ekrana ekle</h2>
         {hint === 'ios' ? (
           <p className={styles.body}>
-            Tarayıcının <strong>Paylaş</strong> düğmesine <ShareIcon className={styles.icon} width={16} height={16} /> dokun,
-            sonra <strong>Ana Ekrana Ekle</strong>’yi seç. Uygulama gibi açılır, notların da silinmez.
+            <strong>Paylaş</strong> <ShareIcon className={styles.icon} width={16} height={16} /> → <strong>Ana Ekrana Ekle</strong>
           </p>
         ) : (
-          <p className={styles.body}>Uygulama gibi açılır, internet zayıfken de çalışır ve notların güvende kalır.</p>
+          <p className={styles.body}>Uygulama gibi açılır.</p>
         )}
       </div>
       <div className={styles.actions}>

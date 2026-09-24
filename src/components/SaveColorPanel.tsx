@@ -27,7 +27,7 @@ export function SaveColorPanel({ maxNoteLength, maxCodeLength, onSave, onOpenSav
       <div className={styles.saved} role="status">
         <p className={styles.savedText}>
           <CheckIcon width={20} height={20} />
-          Notlarına eklendi
+          Eklendi
         </p>
         <button type="button" className={styles.link} onClick={onOpenSaved}>
           Notlarıma git
@@ -39,8 +39,8 @@ export function SaveColorPanel({ maxNoteLength, maxCodeLength, onSave, onOpenSav
   if (state === 'editing') {
     return (
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.label} htmlFor="save-code">
-          Kod / etiket (isteğe bağlı)
+        <label className="visually-hidden" htmlFor="save-code">
+          Kod / etiket
         </label>
         <input
           id="save-code"
@@ -48,15 +48,15 @@ export function SaveColorPanel({ maxNoteLength, maxCodeLength, onSave, onOpenSav
           type="text"
           value={code}
           maxLength={maxCodeLength}
-          placeholder="ör. A15"
+          placeholder="Kod (ör. A15)"
           enterKeyHint="next"
           autoComplete="off"
           autoCapitalize="characters"
           autoFocus
           onChange={(event) => setCode(event.target.value)}
         />
-        <label className={styles.label} htmlFor="save-note">
-          Not (isteğe bağlı)
+        <label className="visually-hidden" htmlFor="save-note">
+          Not
         </label>
         <textarea
           id="save-note"
@@ -64,16 +64,18 @@ export function SaveColorPanel({ maxNoteLength, maxCodeLength, onSave, onOpenSav
           rows={3}
           value={note}
           maxLength={maxNoteLength}
-          placeholder="ör. mavi ip, siparişten önce kontrol et"
+          placeholder="Not"
           autoComplete="off"
           onChange={(event) => setNote(event.target.value)}
         />
-        <p className={styles.counter}>
-          {note.length} / {maxNoteLength}
-        </p>
+        {note.length > maxNoteLength * 0.8 && (
+          <p className={styles.counter}>
+            {note.length} / {maxNoteLength}
+          </p>
+        )}
         <div className={styles.actions}>
           <button type="submit" className={styles.primary}>
-            Notlarıma ekle
+            Kaydet
           </button>
           <button type="button" className={styles.secondary} onClick={() => setState('idle')}>
             Vazgeç

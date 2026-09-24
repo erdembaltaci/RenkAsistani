@@ -1,6 +1,6 @@
 .stage {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   animation: rise 0.5s var(--ease) both;
 }
 
@@ -10,16 +10,18 @@
   width: fit-content;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0;
-  border: 0;
   border-radius: var(--radius-xl);
   background: var(--fill);
   box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: crosshair;
-  touch-action: manipulation;
-  -webkit-appearance: none;
-  appearance: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.picking {
+  outline: 3px dashed var(--ink);
+  outline-offset: -3px;
 }
 
 .image {
@@ -29,23 +31,144 @@
   max-height: 38svh;
   width: auto;
   height: auto;
-  user-select: none;
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
 }
 
+/* ---- Renk seçici daire ---- */
 .marker {
   position: absolute;
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
+  display: grid;
+  place-items: center;
+  width: 64px; /* parmakla tutmak için geniş dokunma alanı */
+  height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  touch-action: none; /* sürüklerken sayfa kaymasın */
+  cursor: grab;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.marker:active {
+  cursor: grabbing;
+}
+
+.marker:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+}
+
+.picking .marker {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.ring {
+  position: relative;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 3px solid #ffffff;
   box-shadow:
     0 0 0 2px rgba(0, 0, 0, 0.75),
     inset 0 0 0 2px rgba(0, 0, 0, 0.75);
+  transition: transform 0.2s var(--ease);
+}
+
+.dragging .ring {
+  transform: scale(1.3);
+}
+
+/* İlk kullanımda yazısız yönlendirme: daire hafifçe sağa-sola gider ve etrafında halka nabız gibi büyür. */
+.cue .ring {
+  animation: nudge 2.6s var(--ease) 0.9s 2;
+}
+
+.cue .ring::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.35);
+  animation: pulse 1.9s ease-out infinite;
+}
+
+.cueBadge {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-16px);
+  }
+  75% {
+    transform: translateX(16px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* Sürüklerken parmağın altında kalan rengi gösteren baloncuk. */
+.bubble {
+  position: absolute;
+  left: 50%;
+  top: -60px;
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow:
+    0 0 0 1.5px rgba(0, 0, 0, 0.25),
+    0 10px 22px -6px rgba(0, 0, 0, 0.5);
   pointer-events: none;
-  animation: rise 0.25s ease both;
+}
+
+.bubbleBelow {
+  top: auto;
+  bottom: -60px;
+}
+
+.referenceMarker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 2px dashed #ffffff;
+  background: rgba(17, 17, 19, 0.75);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  pointer-events: none;
 }
 
 .chip {
@@ -75,28 +198,10 @@
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-.picking {
-  outline: 3px dashed var(--ink);
-  outline-offset: -3px;
-}
-
-.referenceMarker {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 2px dashed #ffffff;
-  background: rgba(17, 17, 19, 0.75);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  pointer-events: none;
-}
-
 .tools {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
 }
 

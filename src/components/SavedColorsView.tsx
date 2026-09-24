@@ -33,6 +33,7 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
   const visible = useMemo(() => filterSavedColors(colors, query), [colors, query]);
   const isSearching = query.trim() !== '';
   const canCompare = compareBase ? colors.length >= 1 : colors.length >= 2;
+  const remaining = (compareBase ? 1 : 2) - compare.selectedIds.length;
 
   return (
     <section className={styles.view} aria-labelledby="saved-title">
@@ -42,20 +43,20 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
 
       {colors.length > 0 && (
         <div className={styles.actions}>
-          <button type="button" className={styles.action} onClick={() => copy(listText)}>
-            {status === 'copied' ? <CheckIcon width={18} height={18} /> : <CopyIcon width={18} height={18} />}
-            {status === 'copied' ? 'Kopyalandı' : status === 'failed' ? 'Kopyalanamadı' : 'Listeyi kopyala'}
-          </button>
-          <button type="button" className={styles.action} onClick={() => exportNotes(colors)}>
-            <DownloadIcon width={18} height={18} />
-            Excel’e aktar
-          </button>
           {canCompare && !compare.isActive && (
             <button type="button" className={styles.action} onClick={compare.start}>
               <CompareIcon width={18} height={18} />
               Karşılaştır
             </button>
           )}
+          <button type="button" className={styles.action} onClick={() => copy(listText)}>
+            {status === 'copied' ? <CheckIcon width={18} height={18} /> : <CopyIcon width={18} height={18} />}
+            {status === 'copied' ? 'Kopyalandı' : status === 'failed' ? 'Olmadı' : 'Kopyala'}
+          </button>
+          <button type="button" className={styles.action} onClick={() => exportNotes(colors)}>
+            <DownloadIcon width={18} height={18} />
+            Excel
+          </button>
         </div>
       )}
       {exportMessage && (
@@ -66,13 +67,7 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
 
       {compare.isActive && (
         <div className={styles.compareBar} role="status">
-          <p>
-            {compareBase
-              ? 'Şu anki rengi karşılaştırmak için bir not seç.'
-              : compare.selectedIds.length < 2
-                ? `Karşılaştırmak için ${2 - compare.selectedIds.length} not seç.`
-                : 'Karşılaştırma hazır.'}
-          </p>
+          <p>{remaining > 0 ? (remaining === 2 ? 'İki not seç' : 'Bir not seç') : 'Hazır'}</p>
           <button
             type="button"
             className={styles.finish}
@@ -92,7 +87,7 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
       {error && <Notice variant="error">{error}</Notice>}
       {!isPersistent && (
         <Notice variant="warning" title="Notlar kalıcı değil">
-          Bu tarayıcı site verisini saklamaya izin vermiyor (özel gezinti olabilir). Notlar sayfa kapanınca silinir.
+          Bu tarayıcı kayıt tutmaya izin vermiyor; sayfa kapanınca silinir.
         </Notice>
       )}
 
@@ -106,7 +101,7 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
             className={styles.searchInput}
             type="search"
             value={query}
-            placeholder="Notlarda ara (ör. A15, bordo)"
+            placeholder="Ara (ör. A15)"
             enterKeyHint="search"
             autoComplete="off"
             onChange={(event) => setQuery(event.target.value)}
@@ -122,12 +117,11 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
       {colors.length === 0 ? (
         <div className={styles.empty}>
           <p className={styles.emptyTitle}>Henüz not yok</p>
-          <p>Bir rengi bulunca “Notlarıma ekle”ye dokun; adı, hex kodu, kod/etiketi ve yazdığın not burada saklanır.</p>
+          <p>Bir renk bulunca “Notlarıma ekle”ye dokun.</p>
         </div>
       ) : visible.length === 0 ? (
         <div className={styles.empty}>
           <p className={styles.emptyTitle}>Eşleşen not yok</p>
-          <p>Başka bir sözcükle, koduyla veya hex koduyla aramayı dene.</p>
         </div>
       ) : (
         <ul className={styles.list}>
@@ -145,11 +139,7 @@ export function SavedColorsView({ colors, listText, isPersistent, error, onUpdat
         </ul>
       )}
 
-      <p className={styles.footnote}>
-        Notlar yalnızca bu telefonda, bu tarayıcıda saklanır; fotoğraflar kaydedilmez. Safari, bir siteyi uzun süre
-        açmazsanız site verisini silebilir; siteyi ana ekrana ekleyin ve önemli notları “Excel’e aktar” veya “Listeyi
-        kopyala” ile yedekleyin.
-      </p>
+      {colors.length > 0 && <p className={styles.footnote}>Notlar bu telefonda saklanır. Yedek için Excel’e aktar.</p>}
     </section>
   );
 }
