@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ReportView } from '../hooks/useColorSession';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
-import { CheckIcon, CopyIcon, ShareIcon } from './icons';
+import { CheckIcon, CompareIcon, CopyIcon, ShareIcon } from './icons';
 import styles from './ResultCard.module.css';
 
 interface ResultCardProps {
@@ -9,15 +9,22 @@ interface ResultCardProps {
   onShare: () => void;
   /** Paylaşım başarısız olduğunda kısa süre gösterilen mesaj. */
   shareMessage: string | null;
+  /** Kayıtlı not varsa, şu anki rengi onlarla karşılaştırma eylemi gösterilir. */
+  canCompare: boolean;
+  onCompare: () => void;
   /** Sonucun altına konacak eylemler (ör. notlara ekle paneli). */
   actions?: ReactNode;
 }
 
 const COPY_LABEL = { idle: 'Kopyala', copied: 'Kopyalandı', failed: 'Kopyalanamadı' } as const;
 
-export function ResultCard({ report, onShare, shareMessage, actions }: ResultCardProps) {
+export function ResultCard({ report, onShare, shareMessage, canCompare, onCompare, actions }: ResultCardProps) {
   const { status, copy } = useCopyToClipboard();
   const { lab, rgb } = report;
+
+  const eyebrow = ['Tahmini renk', report.photoCount > 1 ? `${report.photoCount} fotoğraftan` : null, report.isLightCorrected ? 'ışık düzeltildi' : null]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <section className={styles.chip} aria-labelledby="result-name">
@@ -31,9 +38,7 @@ export function ResultCard({ report, onShare, shareMessage, actions }: ResultCar
 
       <div className={styles.body}>
         <div className={styles.head}>
-          <p className={styles.eyebrow}>
-            Tahmini renk{report.photoCount > 1 ? ` · ${report.photoCount} fotoğraftan` : ''}
-          </p>
+          <p className={styles.eyebrow}>{eyebrow}</p>
           <h2 id="result-name" className={styles.name} aria-live="polite">
             {report.name}
           </h2>
@@ -71,6 +76,13 @@ export function ResultCard({ report, onShare, shareMessage, actions }: ResultCar
         </p>
 
         {actions}
+
+        {canCompare && (
+          <button type="button" className={styles.compare} onClick={onCompare}>
+            <CompareIcon width={20} height={20} />
+            Kayıtlı bir notla karşılaştır
+          </button>
+        )}
 
         <details className={styles.details}>
           <summary>Teknik ayrıntılar</summary>

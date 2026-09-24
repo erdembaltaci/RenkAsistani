@@ -159,3 +159,25 @@
   margin: 0;
   font-variant-numeric: tabular-nums;
 }
+
+.compare {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.compare:active {
+  transform: scale(0.98);
+}

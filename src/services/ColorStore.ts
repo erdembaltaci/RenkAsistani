@@ -1,4 +1,4 @@
-import type { NewSavedColor, SavedColor } from '../domain/savedColor';
+import type { NewSavedColor, SavedColor, SavedColorChanges } from '../domain/savedColor';
 
 export interface ColorStore {
   /** Kayıtlar kalıcı mı (yeniden açılınca duruyor mu)? Depolama kapalıysa false. */
@@ -6,6 +6,7 @@ export interface ColorStore {
   /** En yeni kayıt başta. */
   list(): SavedColor[];
   add(entry: NewSavedColor): SavedColor;
-  updateNote(id: string, note: string): void;
+  /** Yalnızca verilen alanları günceller. */
+  update(id: string, changes: SavedColorChanges): void;
   remove(id: string): void;
 }

@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { ColorCard, ColorCardRenderer } from './ColorCardRenderer';
-import { WebColorSharer, type ShareCapableNavigator } from './WebColorSharer';
+import type { ShareCapableNavigator } from './ShareCapableNavigator';
+import { WebColorSharer } from './WebColorSharer';
 
-const color: ColorCard = { name: 'Bordo', hex: '#6B0F1A', tone: 'Koyu kırmızı', note: 'A15 nolu üretim ipi' };
+const color: ColorCard = { name: 'Bordo', hex: '#6B0F1A', tone: 'Koyu kırmızı', code: '', note: 'A15 nolu üretim ipi' };
 const image = new File([new Uint8Array([1, 2, 3])], 'renk.png', { type: 'image/png' });
 
 const makeSharer = (options: {

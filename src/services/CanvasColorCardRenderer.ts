@@ -61,7 +61,7 @@ function dataUrlToFile(dataUrl: string, name: string): File {
 }
 
 export class CanvasColorCardRenderer implements ColorCardRenderer {
-  render({ name, hex, tone, note }: ColorCard): File | null {
+  render({ name, hex, tone, code, note }: ColorCard): File | null {
     const canvas = document.createElement('canvas');
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
@@ -93,6 +93,18 @@ export class CanvasColorCardRenderer implements ColorCardRenderer {
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
     ctx.lineWidth = 2;
     ctx.stroke();
+
+    if (code) {
+      // Beyaz etiket, her renk üzerinde okunur kalır.
+      ctx.font = `700 38px ${FONT}`;
+      const tagW = Math.min(contentW - 56, ctx.measureText(code).width + 56);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+      roundedRect(ctx, contentX + 28, blockY + 28, tagW, 72, 36);
+      ctx.fill();
+      ctx.fillStyle = INK;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(code, contentX + 56, blockY + 28 + 37, tagW - 56);
+    }
 
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = INK;

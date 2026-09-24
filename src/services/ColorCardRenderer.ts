@@ -2,6 +2,8 @@ export interface ColorCard {
   name: string;
   hex: string;
   tone: string;
+  /** Kısa etiket veya üretim kodu; boş olabilir. */
+  code: string;
   note: string;
 }
 

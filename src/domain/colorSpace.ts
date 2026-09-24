@@ -9,12 +9,14 @@ const KAPPA = 24389 / 27;
 
 const clampByte = (value: number): number => Math.min(255, Math.max(0, value));
 
-const channelToLinear = (channel: number): number => {
+/** sRGB kanalını (0–255) doğrusal ışık değerine (0–1) çevirir. */
+export const channelToLinear = (channel: number): number => {
   const c = channel / 255;
   return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 };
 
-const linearToChannel = (linear: number): number => {
+/** Doğrusal ışık değerini (0–1) sRGB kanalına (0–255) çevirir; aralık dışını sıkıştırır. */
+export const linearToChannel = (linear: number): number => {
   const c = linear <= 0.0031308 ? linear * 12.92 : 1.055 * linear ** (1 / 2.4) - 0.055;
   return clampByte(c * 255);
 };

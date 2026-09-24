@@ -100,6 +100,27 @@ export const PencilIcon = (props: IconProps) => (
   </svg>
 );
 
+export const SunIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <circle cx="12" cy="12" r="3.8" />
+    <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
+  </svg>
+);
+
+export const CompareIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <rect x="3.5" y="5" width="7.5" height="14" rx="2.2" />
+    <rect x="13" y="5" width="7.5" height="14" rx="2.2" />
+  </svg>
+);
+
+export const DownloadIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M12 4v11M7.5 10.8 12 15.3l4.5-4.5" />
+    <path d="M5 19.5h14" />
+  </svg>
+);
+
 export const ShareIcon = (props: IconProps) => (
   <svg {...base} {...props}>
     <path d="M12 15V4M8 7.5 12 3.5l4 4" />

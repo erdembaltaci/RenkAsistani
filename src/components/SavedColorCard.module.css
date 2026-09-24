@@ -192,3 +192,67 @@
 .secondarySmall {
   min-height: 44px;
 }
+
+.code {
+  justify-self: start;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+}
+
+/* iOS Safari, 16px'ten küçük yazı alanlarına odaklanınca sayfayı yakınlaştırır. */
+.codeInput {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.codeInput:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.selected {
+  box-shadow:
+    0 0 0 2.5px var(--ink),
+    var(--shadow-card);
+}
+
+.selectOn,
+.selectOff {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 650;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.selectOn {
+  background: var(--ink);
+  color: var(--on-accent);
+}
+
+.selectOff {
+  background: var(--fill);
+  color: var(--ink);
+}

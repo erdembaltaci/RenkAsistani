@@ -29,28 +29,38 @@
   min-height: 52px;
 }
 
-.welcome {
+.greeting {
+  display: grid;
+  gap: 0;
   min-width: 0;
 }
 
-.greeting {
-  font-size: 1.3rem;
+.lead {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.75rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.solo {
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.18;
 }
 
 .heart {
-  display: inline-block;
-  margin-left: 6px;
-  vertical-align: -2px;
+  flex: none;
   color: #e58aa3;
-}
-
-.tagline {
-  color: var(--ink-soft);
-  font-size: 0.85rem;
-  font-weight: 500;
 }
 
 .back,
@@ -95,4 +105,10 @@
   color: var(--on-accent);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
+}
+
+.greeting:has(.solo) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

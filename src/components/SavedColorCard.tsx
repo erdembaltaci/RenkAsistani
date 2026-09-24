@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { MAX_NOTE_LENGTH, type SavedColor } from '../domain/savedColor';
+import { MAX_CODE_LENGTH, MAX_NOTE_LENGTH, type SavedColor, type SavedColorChanges } from '../domain/savedColor';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
 import { useShareColor } from '../hooks/useShareColor';
 import { CheckIcon, CopyIcon, PencilIcon, ShareIcon, TrashIcon } from './icons';
@@ -8,8 +8,10 @@ import styles from './SavedColorCard.module.css';
 interface SavedColorCardProps {
   color: SavedColor;
   /** Başarılıysa true döner. */
-  onUpdateNote: (id: string, note: string) => boolean;
+  onUpdate: (id: string, changes: SavedColorChanges) => boolean;
   onRemove: (id: string) => void;
+  /** Karşılaştırma modunda kart seçilebilir; verilirse düzenleme/paylaşma/silme araçları gizlenir. */
+  selection?: { isSelected: boolean; onToggle: () => void };
 }
 
 type CardMode = 'view' | 'editing' | 'confirmDelete';
@@ -17,27 +19,30 @@ type CardMode = 'view' | 'editing' | 'confirmDelete';
 const formatDate = (timestamp: number): string =>
   new Date(timestamp).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 
-export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCardProps) {
+export function SavedColorCard({ color, onUpdate, onRemove, selection }: SavedColorCardProps) {
   const [mode, setMode] = useState<CardMode>('view');
-  const [draft, setDraft] = useState(color.note);
+  const [draftCode, setDraftCode] = useState(color.code);
+  const [draftNote, setDraftNote] = useState(color.note);
   const { status, copy } = useCopyToClipboard();
   const { share, message } = useShareColor();
 
   const startEditing = () => {
-    setDraft(color.note);
+    setDraftCode(color.code);
+    setDraftNote(color.note);
     setMode('editing');
   };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (onUpdateNote(color.id, draft)) setMode('view');
+    if (onUpdate(color.id, { code: draftCode, note: draftNote })) setMode('view');
   };
 
   return (
-    <li className={styles.card}>
+    <li className={`${styles.card} ${selection?.isSelected ? styles.selected : ''}`}>
       <div className={styles.summary}>
         <div className={styles.swatch} style={{ background: color.hex }} role="img" aria-label={`Renk örneği ${color.hex}`} />
         <div className={styles.text}>
+          {color.code && <p className={styles.code}>{color.code}</p>}
           <h3 className={styles.name}>{color.name}</h3>
           <p className={styles.tone}>{color.tone}</p>
           <button type="button" className={styles.hex} onClick={() => copy(color.hex)} aria-label={`${color.hex} kodunu kopyala`}>
@@ -49,6 +54,21 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
 
       {mode === 'editing' ? (
         <form className={styles.editForm} onSubmit={handleSubmit}>
+          <label className="visually-hidden" htmlFor={`code-${color.id}`}>
+            Kod / etiket
+          </label>
+          <input
+            id={`code-${color.id}`}
+            className={styles.codeInput}
+            type="text"
+            value={draftCode}
+            maxLength={MAX_CODE_LENGTH}
+            placeholder="Kod / etiket (ör. A15)"
+            autoComplete="off"
+            autoCapitalize="characters"
+            autoFocus
+            onChange={(event) => setDraftCode(event.target.value)}
+          />
           <label className="visually-hidden" htmlFor={`note-${color.id}`}>
             Not
           </label>
@@ -56,12 +76,11 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
             id={`note-${color.id}`}
             className={styles.input}
             rows={3}
-            value={draft}
+            value={draftNote}
             maxLength={MAX_NOTE_LENGTH}
             placeholder="Not ekle"
             autoComplete="off"
-            autoFocus
-            onChange={(event) => setDraft(event.target.value)}
+            onChange={(event) => setDraftNote(event.target.value)}
           />
           <div className={styles.row}>
             <button type="submit" className={styles.primary}>
@@ -84,7 +103,23 @@ export function SavedColorCard({ color, onUpdateNote, onRemove }: SavedColorCard
 
       <div className={styles.footer}>
         <span className={styles.date}>{formatDate(color.savedAt)}</span>
-        {mode === 'confirmDelete' ? (
+        {selection ? (
+          <button
+            type="button"
+            className={selection.isSelected ? styles.selectOn : styles.selectOff}
+            aria-pressed={selection.isSelected}
+            onClick={selection.onToggle}
+          >
+            {selection.isSelected ? (
+              <>
+                <CheckIcon width={18} height={18} />
+                Seçildi
+              </>
+            ) : (
+              'Seç'
+            )}
+          </button>
+        ) : mode === 'confirmDelete' ? (
           <span className={styles.confirm}>
             Silinsin mi?
             <button type="button" className={styles.danger} onClick={() => onRemove(color.id)}>

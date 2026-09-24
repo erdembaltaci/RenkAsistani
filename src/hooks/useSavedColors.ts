@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { formatSavedColorsAsText, type NewSavedColor } from '../domain/savedColor';
+import { formatSavedColorsAsText, type NewSavedColor, type SavedColorChanges } from '../domain/savedColor';
 import { useServices } from './servicesContext';
 
 const SAVE_ERROR = 'Kaydedilemedi. Tarayıcı bu site için depolamayı engelliyor olabilir.';
@@ -25,9 +25,12 @@ export function useSavedColors() {
   );
 
   const save = useCallback((entry: NewSavedColor) => attempt(() => colorStore.add(entry)), [attempt, colorStore]);
-  const updateNote = useCallback((id: string, note: string) => attempt(() => colorStore.updateNote(id, note)), [attempt, colorStore]);
+  const update = useCallback(
+    (id: string, changes: SavedColorChanges) => attempt(() => colorStore.update(id, changes)),
+    [attempt, colorStore],
+  );
   const remove = useCallback((id: string) => attempt(() => colorStore.remove(id)), [attempt, colorStore]);
   const listText = useMemo(() => formatSavedColorsAsText(saved), [saved]);
 
-  return { saved, listText, isPersistent: colorStore.isPersistent, error, save, updateNote, remove };
+  return { saved, listText, isPersistent: colorStore.isPersistent, error, save, update, remove };
 }

@@ -1,3 +1,4 @@
+import type { Greeting } from '../domain/greeting';
 import { ArrowLeftIcon, BookmarkIcon, HeartIcon } from './icons';
 import styles from './TopBar.module.css';
 
@@ -5,7 +6,7 @@ export type TopBarMode = 'welcome' | 'result' | 'notes';
 
 interface TopBarProps {
   mode: TopBarMode;
-  greeting: string;
+  greeting: Greeting;
   savedCount: number;
   onOpenNotes: () => void;
   onBack: () => void;
@@ -21,13 +22,17 @@ export function TopBar({ mode, greeting, savedCount, onOpenNotes, onBack }: TopB
     <header className={styles.bar}>
       <div className={styles.row}>
         {mode === 'welcome' ? (
-          <div className={styles.welcome}>
-            <h1 className={styles.greeting}>
-              {greeting}
-              <HeartIcon className={styles.heart} width={20} height={20} />
-            </h1>
-            <p className={styles.tagline}>Renk Asistanı</p>
-          </div>
+          <h1 className={styles.greeting}>
+            <span className={greeting.name ? styles.lead : styles.solo}>{greeting.lead}</span>
+            {greeting.name ? (
+              <span className={styles.name}>
+                {greeting.name}
+                <HeartIcon className={styles.heart} width={22} height={22} />
+              </span>
+            ) : (
+              <HeartIcon className={styles.heart} width={22} height={22} />
+            )}
+          </h1>
         ) : (
           <>
             <h1 className="visually-hidden">Renk Asistanı</h1>

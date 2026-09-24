@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { MAX_NOTE_LENGTH } from '../domain/savedColor';
+import { MAX_CODE_LENGTH, MAX_NOTE_LENGTH } from '../domain/savedColor';
 import type { KeyValueStorage } from './KeyValueStorage';
 import { LocalStorageColorStore } from './LocalStorageColorStore';
 import { MemoryStorage } from './MemoryStorage';
 
-const entry = { name: 'Nane yeşili', hex: '#BCE6CF', tone: 'Açık, soluk yeşil', note: '' };
+const entry = { name: 'Nane yeşili', hex: '#BCE6CF', tone: 'Açık, soluk yeşil', code: '', note: '' };
+const KEY = 'renk-asistani.kaydedilenler.v1';
 
 function makeStore(storage: KeyValueStorage = new MemoryStorage(), maxItems?: number) {
   let tick = 1000;
@@ -40,18 +41,26 @@ describe('LocalStorageColorStore', () => {
     expect(makeStore(storage).list()).toHaveLength(1);
   });
 
-  it('notu kırpar ve uzunluğu sınırlar', () => {
+  it('notu ve kodu kırpar, uzunluklarını sınırlar', () => {
     const store = makeStore();
-    expect(store.add({ ...entry, note: '  mavi tişört  ' }).note).toBe('mavi tişört');
+    const saved = store.add({ ...entry, code: '  A15  ', note: '  mavi tişört  ' });
+    expect(saved.code).toBe('A15');
+    expect(saved.note).toBe('mavi tişört');
     expect(store.add({ ...entry, note: 'x'.repeat(MAX_NOTE_LENGTH + 20) }).note).toHaveLength(MAX_NOTE_LENGTH);
+    expect(store.add({ ...entry, code: 'y'.repeat(MAX_CODE_LENGTH + 20) }).code).toHaveLength(MAX_CODE_LENGTH);
   });
 
-  it('notu günceller, diğer kayıtlara dokunmaz', () => {
+  it('yalnızca verilen alanı günceller, diğer alan ve kayıtlara dokunmaz', () => {
     const store = makeStore();
-    const first = store.add({ ...entry, name: 'Birinci' });
+    const first = store.add({ ...entry, name: 'Birinci', code: 'A1', note: 'eski' });
     store.add({ ...entry, name: 'İkinci' });
-    store.updateNote(first.id, 'yeni not');
-    expect(store.list().map((item) => item.note)).toEqual(['', 'yeni not']);
+
+    store.update(first.id, { note: 'yeni not' });
+    expect(store.list().find((item) => item.id === first.id)).toMatchObject({ code: 'A1', note: 'yeni not' });
+
+    store.update(first.id, { code: ' B2 ' });
+    expect(store.list().find((item) => item.id === first.id)).toMatchObject({ code: 'B2', note: 'yeni not' });
+    expect(store.list().find((item) => item.name === 'İkinci')).toMatchObject({ code: '', note: '' });
   });
 
   it('kaydı siler', () => {
@@ -72,15 +81,24 @@ describe('LocalStorageColorStore', () => {
 
   it('bozuk JSON içeren depolamada çökmez, boş liste verir', () => {
     const storage = new MemoryStorage();
-    storage.setItem('renk-asistani.kaydedilenler.v1', '{bozuk');
+    storage.setItem(KEY, '{bozuk');
     expect(makeStore(storage).list()).toEqual([]);
   });
 
   it('geçersiz kayıtları atlar, geçerli olanları korur', () => {
     const storage = new MemoryStorage();
-    const valid = { id: 'ok', name: 'Bej', hex: '#D8C3A5', tone: 'Açık bej', note: '', savedAt: 5 };
-    storage.setItem('renk-asistani.kaydedilenler.v1', JSON.stringify([valid, { id: 1 }, 'x', null]));
+    const valid = { id: 'ok', name: 'Bej', hex: '#D8C3A5', tone: 'Açık bej', code: '', note: '', savedAt: 5 };
+    storage.setItem(KEY, JSON.stringify([valid, { id: 1 }, 'x', null]));
     expect(makeStore(storage).list()).toEqual([valid]);
+  });
+
+  it('kod alanından önce kaydedilmiş eski kayıtları boş kodla okur (geriye uyumluluk)', () => {
+    const storage = new MemoryStorage();
+    const legacy = { id: 'old', name: 'Bej', hex: '#D8C3A5', tone: 'Açık bej', note: 'eski not', savedAt: 5 };
+    storage.setItem(KEY, JSON.stringify([legacy]));
+
+    const [item] = makeStore(storage).list();
+    expect(item).toEqual({ ...legacy, code: '' });
   });
 
   it('depolama yazmayı reddederse hata fırlatır ve mevcut kayıtlar bozulmaz', () => {

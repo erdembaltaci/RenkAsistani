@@ -1,12 +1,7 @@
 import { formatColorText } from '../domain/savedColor';
 import type { ColorCard, ColorCardRenderer } from './ColorCardRenderer';
 import type { ColorSharer, ShareOutcome } from './ColorSharer';
-
-/** `navigator`ın paylaşımla ilgili alt kümesi; testte sahte bir nesneyle değiştirilebilir. */
-export interface ShareCapableNavigator {
-  share?: (data: ShareData) => Promise<void>;
-  canShare?: (data: ShareData) => boolean;
-}
+import { isAbortError, type ShareCapableNavigator } from './ShareCapableNavigator';
 
 interface WebColorSharerDeps {
   navigator: ShareCapableNavigator;
@@ -14,8 +9,6 @@ interface WebColorSharerDeps {
   openUrl: (url: string) => void;
   copyText: (text: string) => Promise<boolean>;
 }
-
-const isAbort = (error: unknown): boolean => (error as { name?: string } | null)?.name === 'AbortError';
 
 export class WebColorSharer implements ColorSharer {
   constructor(private readonly deps: WebColorSharerDeps) {}
@@ -38,7 +31,7 @@ export class WebColorSharer implements ColorSharer {
       await navigator.share(data);
       return 'shared';
     } catch (error) {
-      if (isAbort(error)) return 'cancelled';
+      if (isAbortError(error)) return 'cancelled';
       return (await copyText(text)) ? 'copied' : 'failed';
     }
   }

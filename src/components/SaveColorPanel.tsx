@@ -4,20 +4,22 @@ import styles from './SaveColorPanel.module.css';
 
 interface SaveColorPanelProps {
   maxNoteLength: number;
+  maxCodeLength: number;
   /** Kaydetme başarılıysa true döner. */
-  onSave: (note: string) => boolean;
+  onSave: (fields: { code: string; note: string }) => boolean;
   onOpenSaved: () => void;
 }
 
 type PanelState = 'idle' | 'editing' | 'saved';
 
-export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColorPanelProps) {
+export function SaveColorPanel({ maxNoteLength, maxCodeLength, onSave, onOpenSaved }: SaveColorPanelProps) {
   const [state, setState] = useState<PanelState>('idle');
+  const [code, setCode] = useState('');
   const [note, setNote] = useState('');
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (onSave(note)) setState('saved');
+    if (onSave({ code, note })) setState('saved');
   };
 
   if (state === 'saved') {
@@ -37,6 +39,22 @@ export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColor
   if (state === 'editing') {
     return (
       <form className={styles.form} onSubmit={handleSubmit}>
+        <label className={styles.label} htmlFor="save-code">
+          Kod / etiket (isteğe bağlı)
+        </label>
+        <input
+          id="save-code"
+          className={styles.codeInput}
+          type="text"
+          value={code}
+          maxLength={maxCodeLength}
+          placeholder="ör. A15"
+          enterKeyHint="next"
+          autoComplete="off"
+          autoCapitalize="characters"
+          autoFocus
+          onChange={(event) => setCode(event.target.value)}
+        />
         <label className={styles.label} htmlFor="save-note">
           Not (isteğe bağlı)
         </label>
@@ -46,9 +64,8 @@ export function SaveColorPanel({ maxNoteLength, onSave, onOpenSaved }: SaveColor
           rows={3}
           value={note}
           maxLength={maxNoteLength}
-          placeholder="ör. A15 nolu üretim, mavi ip"
+          placeholder="ör. mavi ip, siparişten önce kontrol et"
           autoComplete="off"
-          autoFocus
           onChange={(event) => setNote(event.target.value)}
         />
         <p className={styles.counter}>

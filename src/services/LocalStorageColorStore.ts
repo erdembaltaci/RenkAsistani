@@ -1,4 +1,11 @@
-import { isSavedColor, normalizeNote, type NewSavedColor, type SavedColor } from '../domain/savedColor';
+import {
+  normalizeCode,
+  normalizeNote,
+  parseSavedColor,
+  type NewSavedColor,
+  type SavedColor,
+  type SavedColorChanges,
+} from '../domain/savedColor';
 import type { ColorStore } from './ColorStore';
 import type { KeyValueStorage } from './KeyValueStorage';
 
@@ -40,6 +47,7 @@ export class LocalStorageColorStore implements ColorStore {
   add(entry: NewSavedColor): SavedColor {
     const saved: SavedColor = {
       ...entry,
+      code: normalizeCode(entry.code),
       note: normalizeNote(entry.note),
       id: this.createId(),
       savedAt: this.now(),
@@ -49,9 +57,18 @@ export class LocalStorageColorStore implements ColorStore {
     return saved;
   }
 
-  updateNote(id: string, note: string): void {
-    const cleaned = normalizeNote(note);
-    this.write(this.read().map((item) => (item.id === id ? { ...item, note: cleaned } : item)));
+  update(id: string, changes: SavedColorChanges): void {
+    this.write(
+      this.read().map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              ...(changes.code === undefined ? {} : { code: normalizeCode(changes.code) }),
+              ...(changes.note === undefined ? {} : { note: normalizeNote(changes.note) }),
+            }
+          : item,
+      ),
+    );
   }
 
   remove(id: string): void {
@@ -62,7 +79,11 @@ export class LocalStorageColorStore implements ColorStore {
   private read(): SavedColor[] {
     try {
       const parsed: unknown = JSON.parse(this.storage.getItem(this.key) ?? '[]');
-      return Array.isArray(parsed) ? parsed.filter(isSavedColor) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.flatMap((value) => {
+        const color = parseSavedColor(value);
+        return color ? [color] : [];
+      });
     } catch {
       return [];
     }

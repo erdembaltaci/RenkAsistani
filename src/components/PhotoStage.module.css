@@ -75,30 +75,61 @@
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-.caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 4px;
-  color: var(--ink-soft);
-  font-size: 0.85rem;
+.picking {
+  outline: 3px dashed var(--ink);
+  outline-offset: -3px;
 }
 
-.autoButton {
-  flex: none;
+.referenceMarker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 2px dashed #ffffff;
+  background: rgba(17, 17, 19, 0.75);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tool {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
+  min-height: 42px;
   padding: 0 14px;
   border: 0;
   border-radius: 999px;
   background: var(--card);
   box-shadow: var(--shadow-pill);
+  color: var(--ink);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  transition: transform 0.2s var(--ease);
+}
+
+.tool:active {
+  transform: scale(0.96);
+}
+
+.toolActive {
+  background: var(--ink);
+  color: var(--on-accent);
+}
+
+.hint {
+  padding: 0 4px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
 }

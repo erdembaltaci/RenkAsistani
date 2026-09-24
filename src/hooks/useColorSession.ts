@@ -6,18 +6,25 @@ import { useServices } from './servicesContext';
 
 export const MAX_PHOTOS = 6;
 
+/** none: düzeltme yok; applied: beyaz referansa göre düzeltildi; unreliable: seçilen nokta beyaza benzemiyor. */
+export type LightStatus = 'none' | 'applied' | 'unreliable';
+
 interface PhotoState {
   id: string;
   previewUrl: string;
   pixels: PixelBuffer;
   focus: Point | null;
+  reference: Point | null;
   lab: Lab;
+  lightStatus: LightStatus;
 }
 
 export interface PhotoView {
   id: string;
   previewUrl: string;
   focus: Point | null;
+  reference: Point | null;
+  lightStatus: LightStatus;
   hex: string;
   colorName: string;
   isDeviating: boolean;
@@ -37,18 +44,31 @@ export interface ReportView {
   tone: string;
   photoCount: number;
   deviation: DeviationKind;
+  /** En az bir fotoğrafta beyaz referansla ışık düzeltmesi uygulandı. */
+  isLightCorrected: boolean;
 }
 
 const LOAD_ERROR = 'Bu fotoğraf açılamadı. Başka bir fotoğraf dene.';
 const PARTIAL_ERROR = 'Bazı fotoğraflar açılamadı, diğerleri eklendi.';
 
 export function useColorSession() {
-  const { imageLoader, sampler, namer, aggregator, toneDescriber } = useServices();
+  const { imageLoader, sampler, namer, aggregator, toneDescriber, lightCorrector } = useServices();
   const [photos, setPhotos] = useState<PhotoState[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const nextId = useRef(0);
+
+  const measure = useCallback(
+    (pixels: PixelBuffer, focus: Point | null, reference: Point | null): Pick<PhotoState, 'lab' | 'lightStatus'> => {
+      const measured = sampler.sample(pixels, focus ?? undefined);
+      if (!reference) return { lab: measured, lightStatus: 'none' };
+
+      const correction = lightCorrector.correct(measured, sampler.sample(pixels, reference));
+      return { lab: correction.corrected, lightStatus: correction.isReliable ? 'applied' : 'unreliable' };
+    },
+    [sampler, lightCorrector],
+  );
 
   const addFiles = useCallback(
     async (files: readonly File[]) => {
@@ -64,7 +84,14 @@ export function useColorSession() {
       for (const file of accepted) {
         try {
           const { pixels, previewUrl } = await imageLoader.load(file);
-          added.push({ id: `photo-${nextId.current++}`, previewUrl, pixels, focus: null, lab: sampler.sample(pixels) });
+          added.push({
+            id: `photo-${nextId.current++}`,
+            previewUrl,
+            pixels,
+            focus: null,
+            reference: null,
+            ...measure(pixels, null, null),
+          });
         } catch {
           failed += 1;
         }
@@ -77,19 +104,24 @@ export function useColorSession() {
       if (failed > 0) setError(added.length === 0 ? LOAD_ERROR : PARTIAL_ERROR);
       setIsLoading(false);
     },
-    [imageLoader, sampler, photos.length],
+    [imageLoader, measure, photos.length],
   );
 
-  const setFocus = useCallback(
-    (id: string, focus: Point | null) => {
+  const remeasure = useCallback(
+    (id: string, change: Partial<Pick<PhotoState, 'focus' | 'reference'>>) => {
       setPhotos((current) =>
-        current.map((photo) =>
-          photo.id === id ? { ...photo, focus, lab: sampler.sample(photo.pixels, focus ?? undefined) } : photo,
-        ),
+        current.map((photo) => {
+          if (photo.id !== id) return photo;
+          const next = { ...photo, ...change };
+          return { ...next, ...measure(next.pixels, next.focus, next.reference) };
+        }),
       );
     },
-    [sampler],
+    [measure],
   );
+
+  const setFocus = useCallback((id: string, focus: Point | null) => remeasure(id, { focus }), [remeasure]);
+  const setReference = useCallback((id: string, reference: Point | null) => remeasure(id, { reference }), [remeasure]);
 
   const removePhoto = useCallback(
     (id: string) => {
@@ -131,12 +163,15 @@ export function useColorSession() {
       tone: toneDescriber.describe(aggregation.color),
       photoCount: photos.length,
       deviation,
+      isLightCorrected: photos.some((photo) => photo.lightStatus === 'applied'),
     };
 
     const views: PhotoView[] = photos.map((photo, index) => ({
       id: photo.id,
       previewUrl: photo.previewUrl,
       focus: photo.focus,
+      reference: photo.reference,
+      lightStatus: photo.lightStatus,
       hex: rgbToHex(labToRgb(photo.lab)),
       colorName: namer.name(photo.lab).primary.name,
       isDeviating: aggregation.deviatingIndexes.includes(index),
@@ -158,6 +193,7 @@ export function useColorSession() {
     addFiles,
     selectPhoto: setActiveId,
     setFocus,
+    setReference,
     removePhoto,
     reset,
   };

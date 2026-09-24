@@ -14,7 +14,8 @@ import { TopBar, type TopBarMode } from './components/TopBar';
 import { Welcome } from './components/Welcome';
 import { RECIPIENT_NAME } from './config';
 import { buildGreeting } from './domain/greeting';
-import { MAX_NOTE_LENGTH } from './domain/savedColor';
+import { MAX_CODE_LENGTH, MAX_NOTE_LENGTH } from './domain/savedColor';
+import type { ComparedColor } from './hooks/useCompareSelection';
 import { MAX_PHOTOS, useColorSession } from './hooks/useColorSession';
 import { useSavedColors } from './hooks/useSavedColors';
 import { useShareColor } from './hooks/useShareColor';
@@ -29,14 +30,24 @@ export function App() {
   const savedColors = useSavedColors();
   const { share, message: shareMessage } = useShareColor();
   const [view, setView] = useState<View>('home');
+  const [compareBase, setCompareBase] = useState<ComparedColor | null>(null);
   const { activePhoto, report } = session;
 
   const hasResult = activePhoto !== null && report !== null;
   const isProcessing = session.isLoading && !hasResult;
   const mode: TopBarMode = view === 'notes' ? 'notes' : hasResult ? 'result' : 'welcome';
 
-  const handleFiles = (files: File[]) => {
+  const openNotes = (base: ComparedColor | null = null) => {
+    setCompareBase(base);
+    setView('notes');
+  };
+  const closeNotes = () => {
+    setCompareBase(null);
     setView('home');
+  };
+
+  const handleFiles = (files: File[]) => {
+    closeNotes();
     void session.addFiles(files);
   };
 
@@ -57,19 +68,22 @@ export function App() {
           mode={mode}
           greeting={buildGreeting(RECIPIENT_NAME)}
           savedCount={savedColors.saved.length}
-          onOpenNotes={() => setView('notes')}
-          onBack={mode === 'notes' ? () => setView('home') : session.reset}
+          onOpenNotes={() => openNotes()}
+          onBack={mode === 'notes' ? closeNotes : session.reset}
         />
 
         <main className={styles.main}>
           {view === 'notes' ? (
             <SavedColorsView
+              key={compareBase?.hex ?? 'browse'}
               colors={savedColors.saved}
               listText={savedColors.listText}
               isPersistent={savedColors.isPersistent}
               error={savedColors.error}
-              onUpdateNote={savedColors.updateNote}
+              onUpdate={savedColors.update}
               onRemove={savedColors.remove}
+              compareBase={compareBase}
+              onExitCompare={() => setCompareBase(null)}
             />
           ) : (
             <>
@@ -82,6 +96,8 @@ export function App() {
                     photo={activePhoto}
                     onPick={(point) => session.setFocus(activePhoto.id, point)}
                     onAuto={() => session.setFocus(activePhoto.id, null)}
+                    onPickReference={(point) => session.setReference(activePhoto.id, point)}
+                    onClearReference={() => session.setReference(activePhoto.id, null)}
                   />
                   {session.photos.length > 1 && (
                     <PhotoStrip
@@ -94,18 +110,21 @@ export function App() {
                   <DeviationNotice kind={report.deviation} />
                   <ResultCard
                     report={report}
-                    onShare={() => share({ name: report.name, hex: report.hex, tone: report.tone, note: '' })}
+                    onShare={() => share({ name: report.name, hex: report.hex, tone: report.tone, code: '', note: '' })}
                     shareMessage={shareMessage}
+                    canCompare={savedColors.saved.length > 0}
+                    onCompare={() => openNotes({ name: report.name, hex: report.hex, caption: 'Şu anki renk' })}
                     actions={
                       <>
                         {savedColors.error && <Notice variant="error">{savedColors.error}</Notice>}
                         <SaveColorPanel
                           key={`${report.hex}-${report.name}`}
                           maxNoteLength={MAX_NOTE_LENGTH}
-                          onSave={(note) =>
-                            savedColors.save({ name: report.name, hex: report.hex, tone: report.tone, note })
+                          maxCodeLength={MAX_CODE_LENGTH}
+                          onSave={({ code, note }) =>
+                            savedColors.save({ name: report.name, hex: report.hex, tone: report.tone, code, note })
                           }
-                          onOpenSaved={() => setView('notes')}
+                          onOpenSaved={() => openNotes()}
                         />
                       </>
                     }
@@ -117,7 +136,7 @@ export function App() {
               ) : (
                 <Welcome
                   footer={
-                    <RecentNotes colors={savedColors.saved.slice(0, RECENT_NOTES_COUNT)} onOpen={() => setView('notes')} />
+                    <RecentNotes colors={savedColors.saved.slice(0, RECENT_NOTES_COUNT)} onOpen={() => openNotes()} />
                   }
                 >
                   {picker('hero')}
