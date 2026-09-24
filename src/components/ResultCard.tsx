@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { ReportView } from '../hooks/useColorSession';
 import { useCopyToClipboard } from '../hooks/useCopyToClipboard';
 import { CheckIcon, CopyIcon, ResetIcon } from './icons';
@@ -6,11 +7,13 @@ import styles from './ResultCard.module.css';
 interface ResultCardProps {
   report: ReportView;
   onReset: () => void;
+  /** Sonucun altına konacak eylemler (ör. kaydet paneli). */
+  actions?: ReactNode;
 }
 
 const COPY_LABEL = { idle: 'Kopyala', copied: 'Kopyalandı', failed: 'Kopyalanamadı' } as const;
 
-export function ResultCard({ report, onReset }: ResultCardProps) {
+export function ResultCard({ report, onReset, actions }: ResultCardProps) {
   const { status, copy } = useCopyToClipboard();
   const { lab, rgb } = report;
 
@@ -47,6 +50,8 @@ export function ResultCard({ report, onReset }: ResultCardProps) {
           </>
         )}
       </p>
+
+      {actions}
 
       <details className={styles.details}>
         <summary>Teknik ayrıntılar</summary>

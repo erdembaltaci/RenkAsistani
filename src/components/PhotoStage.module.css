@@ -18,16 +18,20 @@
   cursor: crosshair;
   box-shadow: var(--shadow-soft);
   touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .image {
   display: block;
   max-width: 100%;
+  max-height: 42vh; /* svh desteklemeyen eski iOS için yedek */
   max-height: 42svh;
   width: auto;
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .marker {

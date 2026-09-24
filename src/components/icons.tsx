@@ -68,3 +68,34 @@ export const ResetIcon = (props: IconProps) => (
     <path d="M4.5 4.5v4h4" />
   </svg>
 );
+
+export const BookmarkIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M7 4.5h10a1 1 0 0 1 1 1V20l-6-3.8L6 20V5.5a1 1 0 0 1 1-1z" />
+  </svg>
+);
+
+export const HeartIcon = (props: IconProps) => (
+  <svg {...base} fill="currentColor" stroke="none" {...props}>
+    <path d="M12 20.3c-.3 0-.6-.1-.8-.3C6.6 16.3 3.5 13.5 3.5 9.9 3.5 7.4 5.4 5.5 7.8 5.5c1.6 0 3.1.9 4.2 2.4 1.1-1.5 2.6-2.4 4.2-2.4 2.4 0 4.3 1.9 4.3 4.4 0 3.6-3.1 6.4-7.7 10.1-.2.2-.5.3-.8.3z" />
+  </svg>
+);
+
+export const ArrowLeftIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M19 12H5M11 6l-6 6 6 6" />
+  </svg>
+);
+
+export const TrashIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M4.5 7h15M9.5 7V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M6.5 7l.8 11.2a1.5 1.5 0 0 0 1.5 1.3h6.4a1.5 1.5 0 0 0 1.5-1.3L17.5 7" />
+  </svg>
+);
+
+export const PencilIcon = (props: IconProps) => (
+  <svg {...base} {...props}>
+    <path d="M4.5 19.5l1-4.2L16.3 4.5a1.8 1.8 0 0 1 2.6 0l.6.6a1.8 1.8 0 0 1 0 2.6L8.7 18.5z" />
+    <path d="M14.5 6.3l3.2 3.2" />
+  </svg>
+);

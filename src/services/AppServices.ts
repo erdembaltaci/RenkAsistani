@@ -1,5 +1,6 @@
 import type { ColorAggregator } from './ColorAggregator';
 import type { ColorNamer } from './ColorNamer';
+import type { ColorStore } from './ColorStore';
 import type { ColorSampler } from './ColorSampler';
 import type { ImageLoader } from './ImageLoader';
 import type { ToneDescriber } from './ToneDescriber';
@@ -11,4 +12,5 @@ export interface AppServices {
   namer: ColorNamer;
   aggregator: ColorAggregator;
   toneDescriber: ToneDescriber;
+  colorStore: ColorStore;
 }
